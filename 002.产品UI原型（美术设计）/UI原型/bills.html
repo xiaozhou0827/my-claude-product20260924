@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>记小账 · 账单</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-[#F4EAEC]">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FFF9F9] overflow-hidden flex flex-col">
+<header class="shrink-0 px-5 pt-6 pb-3">
+<div class="flex items-center justify-between">
+<h1 class="text-[22px] font-bold text-[#4A4A4A]">账单</h1>
+<div class="flex items-center gap-2">
+<button class="w-9 h-9 rounded-full bg-white border border-[#FFE4E9] flex items-center justify-center text-[#FF8FAB]" onclick="showTip('支持导出 Excel / CSV，入口在「我的 - 数据管理」')" type="button">
+<iconify-icon class="text-[18px]" icon="ph:download-simple"></iconify-icon>
+</button>
+<a class="w-9 h-9 rounded-full bg-gradient-to-br from-[#FF8FAB] to-[#FFB7C5] flex items-center justify-center text-white" href="add.html">
+<iconify-icon class="text-[18px]" icon="ph:plus"></iconify-icon>
+</a>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between rounded-3xl bg-white border border-[#FFE4E9] px-3 py-2">
+<button class="w-8 h-8 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="showTip('仅演示 2026年9月账单数据')" type="button">
+<iconify-icon class="text-[16px]" icon="ph:caret-left"></iconify-icon>
+</button>
+<div class="text-center">
+<p class="text-[15px] font-bold text-[#4A4A4A]">2026年9月</p>
+<p class="text-[11px] text-[#A0A0A0]">支出 ¥4,286.50 · 收入 ¥8,000.00</p>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="showTip('仅演示 2026年9月账单数据')" type="button">
+<iconify-icon class="text-[16px]" icon="ph:caret-right"></iconify-icon>
+</button>
+</div>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 pb-28 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-center gap-2 rounded-2xl bg-white border border-[#FFE4E9] px-3.5 h-11">
+<iconify-icon class="text-[18px] text-[#A0A0A0]" icon="ph:magnifying-glass"></iconify-icon>
+<input class="flex-1 bg-transparent text-[13px] text-[#4A4A4A] placeholder-[#C4C4C4] focus:outline-none" id="searchInput" oninput="applyFilter()" placeholder="搜索备注关键词，如「聚餐」「地铁」" type="text"/>
+</div>
+<div class="mt-3 grid grid-cols-3 gap-2 p-1 rounded-2xl bg-[#FFE4E9]">
+<button class="type-btn h-8 rounded-xl text-[12px] font-semibold bg-white text-[#FF8FAB] shadow-sm" data-type="all" onclick="setType('all')" type="button">全部</button>
+<button class="type-btn h-8 rounded-xl text-[12px] font-semibold text-[#A0A0A0]" data-type="expense" onclick="setType('expense')" type="button">支出</button>
+<button class="type-btn h-8 rounded-xl text-[12px] font-semibold text-[#A0A0A0]" data-type="income" onclick="setType('income')" type="button">收入</button>
+</div>
+<div class="mt-3 -mx-5 px-5 overflow-x-auto [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex gap-2 w-max">
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] font-semibold bg-[#FF8FAB] text-white" data-cat="all" onclick="setCategory('all', this)" type="button">全部</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="餐饮" onclick="setCategory('餐饮', this)" type="button">🍜 餐饮</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="交通" onclick="setCategory('交通', this)" type="button">🚌 交通</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="购物" onclick="setCategory('购物', this)" type="button">🛍️ 购物</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="娱乐" onclick="setCategory('娱乐', this)" type="button">🎬 娱乐</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="医疗" onclick="setCategory('医疗', this)" type="button">💊 医疗</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="教育" onclick="setCategory('教育', this)" type="button">📚 教育</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="住房" onclick="setCategory('住房', this)" type="button">🏠 住房</button>
+<button class="cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-cat="工资" onclick="setCategory('工资', this)" type="button">💰 工资</button>
+</div>
+</div>
+<p class="mt-3 text-[11px] text-[#A0A0A0]">已加载最近记录，当前筛选显示 <span class="font-semibold text-[#FF8FAB]" id="resultCount">14</span> 笔</p>
+<section class="mt-3" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月23日 · 今天</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥214.50</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="餐饮" data-cat-name="餐饮" data-emoji="🍜" data-note="早餐 豆浆油条" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[19px]">🍜</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">早餐 · 豆浆油条</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · 微信 · 今天 07:40</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥12.50</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="餐饮" data-cat-name="餐饮" data-emoji="🍜" data-note="午餐 公司楼下简餐" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[19px]">🍜</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">午餐 · 公司楼下简餐</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · 支付宝 · 今天 12:20</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥28.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="交通" data-cat-name="交通" data-emoji="🚌" data-note="地铁通勤" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-[19px]">🚌</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">地铁通勤</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">交通 · 支付宝 · 今天 08:35</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥6.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="教育" data-cat-name="教育" data-emoji="📚" data-note="专业书籍 增长思维" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E9F1FF] flex items-center justify-center text-[19px]">📚</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">专业书籍《增长思维》</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">教育 · 信用卡 · 今天 21:05</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥168.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月22日 · 昨天</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥224.80</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="购物" data-cat-name="购物" data-emoji="🛍️" data-note="超市生活用品" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-[19px]">🛍️</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">超市生活用品</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">购物 · 微信 · 昨天 19:12</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥156.80</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="餐饮" data-cat-name="餐饮" data-emoji="🍜" data-note="晚餐 朋友聚餐" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[19px]">🍜</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">晚餐 · 朋友聚餐</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · 信用卡 · 昨天 20:30</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥68.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月21日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥120.50</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="娱乐" data-cat-name="娱乐" data-emoji="🎬" data-note="电影票 夏日回声" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFF6DC] flex items-center justify-center text-[19px]">🎬</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">电影票《夏日回声》</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">娱乐 · 微信 · 9月21日 20:40</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥88.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="交通" data-cat-name="交通" data-emoji="🚕" data-note="打车 加班回家" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-[19px]">🚕</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">打车 · 加班回家</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">交通 · 支付宝 · 9月21日 22:15</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥32.50</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月20日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥244.60</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="医疗" data-cat-name="医疗" data-emoji="💊" data-note="感冒药" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE9EC] flex items-center justify-center text-[19px]">💊</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">感冒药</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">医疗 · 现金 · 9月20日 18:20</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥45.60</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+<li data-bill="" data-cat="教育" data-cat-name="教育" data-emoji="📚" data-note="线上课程 数据分析入门" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E9F1FF] flex items-center justify-center text-[19px]">📚</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">线上课程 · 数据分析入门</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">教育 · 信用卡 · 9月20日 10:05</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥199.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月19日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥268.00</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="住房" data-cat-name="住房" data-emoji="🏠" data-note="水电燃气" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#F3EDFF] flex items-center justify-center text-[19px]">🏠</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">水电燃气费</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">住房 · 微信 · 9月19日 09:30</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥268.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月15日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥432.00</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="购物" data-cat-name="购物" data-emoji="🛍️" data-note="换季服饰" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-[19px]">🛍️</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">换季服饰</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">购物 · 信用卡 · 9月15日 16:40</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥432.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月14日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥480.00 · 大额</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="购物" data-cat-name="购物" data-emoji="📶" data-note="数码配件 路由器" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFB7C5] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-[19px]">📶</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">数码配件 · 路由器</p>
+<p class="text-[11px] text-[#FF8FAB] mt-0.5">购物 · 信用卡 · 9月14日 21:10 · 大额消费</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥480.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月12日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥238.00</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="餐饮" data-cat-name="餐饮" data-emoji="🍲" data-note="周末火锅" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[19px]">🍲</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">周末火锅</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · 微信 · 9月12日 19:00</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥238.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月10日</p>
+<p class="text-[12px] text-[#7BC8A4]">收入 ¥8,000.00</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="工资" data-cat-name="工资" data-emoji="💰" data-note="9月工资" data-type="income">
+<div class="rounded-3xl bg-white border border-[#A8E6CF] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-[19px]">💰</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">9月工资</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">工资 · 银行卡 · 9月10日 10:00</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#7BC8A4]">+¥8,000.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月8日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥1,800.00</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="住房" data-cat-name="住房" data-emoji="🏠" data-note="房租 周期性支出" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#F3EDFF] flex items-center justify-center text-[19px]">🏠</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">房租（周期性支出）</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">住房 · 银行卡 · 9月8日 08:00</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥1,800.00</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<section class="mt-4" data-group="">
+<div class="flex items-center justify-between px-1">
+<p class="text-[12px] font-semibold text-[#A0A0A0]">9月6日</p>
+<p class="text-[12px] text-[#A0A0A0]">支出 ¥264.10</p>
+</div>
+<ul class="mt-2 space-y-2.5">
+<li data-bill="" data-cat="娱乐" data-cat-name="娱乐" data-emoji="🎤" data-note="KTV 与演出票" data-type="expense">
+<div class="rounded-3xl bg-white border border-[#FFE4E9] px-4 py-3 flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFF6DC] flex items-center justify-center text-[19px]">🎤</span>
+<div class="flex-1 min-w-0">
+<p class="bill-title text-[14px] font-semibold text-[#4A4A4A] truncate">KTV 与演出票</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">娱乐 · 微信 · 9月6日 21:30</p>
+</div>
+<span class="bill-amount text-[15px] font-semibold text-[#FF8B94]">-¥264.10</span>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="openEdit(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:pencil-simple"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#FF8B94]" onclick="removeBill(this)" type="button">
+<iconify-icon class="text-[14px]" icon="ph:trash"></iconify-icon>
+</button>
+</div>
+</li>
+</ul>
+</section>
+<div class="hidden mt-10 flex-col items-center gap-2" id="emptyState">
+<span class="w-16 h-16 rounded-full bg-[#FFE4E9] flex items-center justify-center text-[28px]">🔍</span>
+<p class="text-[14px] font-semibold text-[#4A4A4A]">没有找到匹配的账单</p>
+<p class="text-[12px] text-[#A0A0A0]">试试更换分类，或清空搜索关键词</p>
+</div>
+<p class="mt-8 text-center text-[11px] text-[#C4C4C4]">删除的记录保留 7 天，可在「我的 - 撤回删除」中恢复</p>
+</main>
+<a class="absolute bottom-[92px] right-4 z-20 flex items-center gap-1.5 h-12 pl-4 pr-5 rounded-full bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white font-semibold text-[15px] shadow-[0_12px_26px_-10px_rgba(255,143,171,0.95)]" href="add.html">
+<iconify-icon class="text-[22px]" icon="ph:plus-circle-fill"></iconify-icon>
+      记一笔
+    </a>
+<nav class="shrink-0 bg-white border-t border-[#FFE4E9] px-2 pt-2 pb-3 grid grid-cols-5">
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="home.html">
+<iconify-icon class="text-[22px]" icon="ph:house"></iconify-icon>
+<span class="text-[11px]">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#FF8FAB]" href="bills.html">
+<iconify-icon class="text-[22px]" icon="ph:receipt"></iconify-icon>
+<span class="text-[11px] font-semibold">账单</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="stats.html">
+<iconify-icon class="text-[22px]" icon="ph:chart-pie-slice"></iconify-icon>
+<span class="text-[11px]">统计</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="budget.html">
+<iconify-icon class="text-[22px]" icon="ph:wallet"></iconify-icon>
+<span class="text-[11px]">预算</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="profile.html">
+<iconify-icon class="text-[22px]" icon="ph:user"></iconify-icon>
+<span class="text-[11px]">我的</span>
+</a>
+</nav>
+<div class="hidden absolute left-4 right-4 bottom-[92px] z-40" id="undoToast">
+<div class="rounded-2xl bg-[#4A4A4A]/95 px-4 py-3 flex items-center justify-between gap-3 shadow-lg">
+<span class="text-[12px] text-white">已删除「<span id="undoName">记录</span>」，7 天内可撤回</span>
+<button class="shrink-0 h-8 px-3 rounded-xl bg-[#FFB7C5] text-[#4A4A4A] text-[12px] font-semibold" onclick="undoDelete()" type="button">撤回删除</button>
+</div>
+</div>
+<div class="hidden absolute inset-0 z-40 bg-[#4A4A4A]/35" id="editModal">
+<div class="absolute left-0 right-0 bottom-0 rounded-t-[28px] bg-white px-5 pt-5 pb-6">
+<div class="flex items-center justify-between">
+<h3 class="text-[16px] font-bold text-[#4A4A4A]">编辑账单</h3>
+<button class="w-8 h-8 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="closeEdit()" type="button">
+<iconify-icon class="text-[16px]" icon="ph:x"></iconify-icon>
+</button>
+</div>
+<label class="mt-4 block text-[12px] text-[#A0A0A0]">金额</label>
+<input class="mt-1.5 w-full h-11 rounded-2xl border border-[#FFE4E9] bg-[#FFF9F9] px-3.5 text-[14px] text-[#4A4A4A] focus:outline-none focus:border-[#FFB7C5]" id="editAmount" min="0" step="0.01" type="number"/>
+<label class="mt-3 block text-[12px] text-[#A0A0A0]">分类</label>
+<select class="mt-1.5 w-full h-11 rounded-2xl border border-[#FFE4E9] bg-[#FFF9F9] px-3 text-[14px] text-[#4A4A4A] focus:outline-none" id="editCategory">
+<option value="餐饮">餐饮</option>
+<option value="交通">交通</option>
+<option value="购物">购物</option>
+<option value="娱乐">娱乐</option>
+<option value="医疗">医疗</option>
+<option value="教育">教育</option>
+<option value="住房">住房</option>
+<option value="工资">工资</option>
+</select>
+<label class="mt-3 block text-[12px] text-[#A0A0A0]">备注</label>
+<input class="mt-1.5 w-full h-11 rounded-2xl border border-[#FFE4E9] bg-[#FFF9F9] px-3.5 text-[14px] text-[#4A4A4A] focus:outline-none focus:border-[#FFB7C5]" id="editNote" maxlength="30" type="text"/>
+<div class="mt-5 grid grid-cols-2 gap-3">
+<button class="h-11 rounded-2xl bg-[#F5F5F5] text-[#4A4A4A] text-[14px] font-semibold" onclick="closeEdit()" type="button">取消</button>
+<button class="h-11 rounded-2xl bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white text-[14px] font-semibold" onclick="saveEdit()" type="button">保存修改</button>
+</div>
+</div>
+</div>
+<div class="hidden absolute left-5 right-5 top-[44%] z-50 rounded-3xl bg-[#4A4A4A]/95 text-white text-[13px] leading-relaxed px-4 py-3 shadow-lg" id="tip"></div>
+</div>
+<script>
+    var activeCat = 'all';
+    var activeType = 'all';
+    var editingRow = null;
+    var deletedRow = null;
+    var tipTimer = null;
+
+    function showTip(message) {
+      var tip = document.getElementById('tip');
+      tip.textContent = message;
+      tip.classList.remove('hidden');
+      if (tipTimer) {
+        clearTimeout(tipTimer);
+      }
+      tipTimer = setTimeout(function () {
+        tip.classList.add('hidden');
+      }, 2400);
+    }
+
+    function applyFilter() {
+      var keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      var rows = document.querySelectorAll('[data-bill]');
+      var shown = 0;
+      rows.forEach(function (row) {
+        var okCat = activeCat === 'all' || row.getAttribute('data-cat') === activeCat;
+        var okType = activeType === 'all' || row.getAttribute('data-type') === activeType;
+        var text = (row.getAttribute('data-cat') + ' ' + row.getAttribute('data-note')).toLowerCase();
+        var okKey = keyword === '' || text.indexOf(keyword) !== -1;
+        var show = okCat && okType && okKey;
+        row.classList.toggle('hidden', !show);
+        if (show) {
+          shown = shown + 1;
+        }
+      });
+      document.querySelectorAll('[data-group]').forEach(function (group) {
+        var visible = group.querySelectorAll('[data-bill]:not(.hidden)').length;
+        group.classList.toggle('hidden', visible === 0);
+      });
+      document.getElementById('resultCount').textContent = shown;
+      var empty = document.getElementById('emptyState');
+      if (shown === 0) {
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+      } else {
+        empty.classList.add('hidden');
+        empty.classList.remove('flex');
+      }
+    }
+
+    function setType(type) {
+      activeType = type;
+      document.querySelectorAll('.type-btn').forEach(function (btn) {
+        var isActive = btn.getAttribute('data-type') === type;
+        btn.classList.toggle('bg-white', isActive);
+        btn.classList.toggle('shadow-sm', isActive);
+        btn.classList.toggle('text-[#FF8FAB]', isActive);
+        btn.classList.toggle('text-[#A0A0A0]', !isActive);
+      });
+      applyFilter();
+    }
+
+    function setCategory(cat, btn) {
+      activeCat = cat;
+      document.querySelectorAll('.cat-chip').forEach(function (chip) {
+        chip.className = 'cat-chip h-8 px-3.5 rounded-full text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]';
+      });
+      btn.className = 'cat-chip h-8 px-3.5 rounded-full text-[12px] font-semibold bg-[#FF8FAB] text-white';
+      applyFilter();
+    }
+
+    function openEdit(btn) {
+      editingRow = btn.closest('[data-bill]');
+      var amountText = editingRow.querySelector('.bill-amount').textContent.replace(/[^0-9.]/g, '');
+      document.getElementById('editAmount').value = amountText;
+      document.getElementById('editCategory').value = editingRow.getAttribute('data-cat-name');
+      document.getElementById('editNote').value = editingRow.getAttribute('data-note');
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEdit() {
+      document.getElementById('editModal').classList.add('hidden');
+      editingRow = null;
+    }
+
+    function saveEdit() {
+      if (!editingRow) {
+        return;
+      }
+      var amount = parseFloat(document.getElementById('editAmount').value);
+      if (!amount || amount <= 0) {
+        showTip('金额需为大于 0 的数字');
+        return;
+      }
+      var cat = document.getElementById('editCategory').value;
+      var note = document.getElementById('editNote').value.trim() || cat;
+      var isIncome = editingRow.getAttribute('data-type') === 'income';
+      editingRow.setAttribute('data-amount', amount.toFixed(2));
+      editingRow.setAttribute('data-cat', cat);
+      editingRow.setAttribute('data-cat-name', cat);
+      editingRow.setAttribute('data-note', note);
+      editingRow.querySelector('.bill-title').textContent = note;
+      var meta = editingRow.querySelectorAll('p')[1];
+      var parts = meta.textContent.split(' · ');
+      meta.textContent = cat + ' · ' + parts.slice(1).join(' · ');
+      var amountNode = editingRow.querySelector('.bill-amount');
+      amountNode.textContent = (isIncome ? '+' : '-') + '¥' + amount.toFixed(2);
+      amountNode.className = 'bill-amount text-[15px] font-semibold ' + (isIncome ? 'text-[#7BC8A4]' : 'text-[#FF8B94]');
+      closeEdit();
+      applyFilter();
+      showTip('已保存修改，账单数据同步更新');
+    }
+
+    function removeBill(btn) {
+      var row = btn.closest('[data-bill]');
+      deletedRow = row;
+      document.getElementById('undoName').textContent = row.getAttribute('data-note');
+      row.classList.add('hidden');
+      applyFilter();
+      document.getElementById('undoToast').classList.remove('hidden');
+    }
+
+    function undoDelete() {
+      if (deletedRow) {
+        deletedRow.classList.remove('hidden');
+        deletedRow = null;
+        applyFilter();
+      }
+      document.getElementById('undoToast').classList.add('hidden');
+      showTip('已恢复该笔记录');
+    }
+
+    applyFilter();
+  </script>
+</body>
+</html>

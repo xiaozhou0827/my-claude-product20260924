@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>记小账 · 首页</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-[#F4EAEC]">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FFF9F9] overflow-hidden flex flex-col">
+<header class="shrink-0 px-5 pt-6 pb-2 flex items-start justify-between">
+<div>
+<p class="text-[12px] text-[#A0A0A0]">2026年9月23日 星期三</p>
+<h1 class="text-[22px] font-bold text-[#4A4A4A] mt-1 leading-tight">早上好，小樱 🌸</h1>
+</div>
+<div class="flex items-center gap-2.5 pt-1">
+<button class="relative w-9 h-9 rounded-full bg-white border border-[#FFE4E9] flex items-center justify-center text-[#FF8FAB]" onclick="showTip('今日提醒：餐饮预算已用 100.02%，已超支 ¥0.30')" type="button">
+<iconify-icon class="text-[18px]" icon="ph:bell"></iconify-icon>
+<span class="absolute top-2 right-2.5 w-1.5 h-1.5 rounded-full bg-[#FF8B94]"></span>
+</button>
+<a class="w-9 h-9 rounded-full bg-gradient-to-br from-[#FFE4E9] to-[#FFB7C5] flex items-center justify-center text-[18px]" href="profile.html">🌸</a>
+</div>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 pb-28 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<section class="rounded-[28px] p-5 bg-gradient-to-br from-[#FFB7C5] via-[#FFA8BC] to-[#FF8FAB] text-white shadow-[0_14px_30px_-12px_rgba(255,143,171,0.85)]">
+<div class="flex items-center justify-between">
+<span class="text-[13px] text-white/85">9月总支出</span>
+<span class="text-[11px] px-2 py-1 rounded-full bg-white/25">较上月 +7.8%</span>
+</div>
+<p class="mt-2 text-[34px] font-bold leading-none tracking-tight">¥4,286.50</p>
+<div class="mt-4 grid grid-cols-2 gap-3">
+<div class="rounded-2xl bg-white/20 px-3 py-2">
+<p class="text-[11px] text-white/80">本月收入</p>
+<p class="text-[15px] font-semibold mt-1">¥8,000.00</p>
+</div>
+<div class="rounded-2xl bg-white/20 px-3 py-2">
+<p class="text-[11px] text-white/80">本月结余</p>
+<p class="text-[15px] font-semibold mt-1">¥3,713.50</p>
+</div>
+</div>
+<a class="mt-4 flex items-center justify-center gap-2 h-11 rounded-2xl bg-white text-[#FF8FAB] font-semibold text-[15px] shadow-[0_6px_16px_-8px_rgba(74,74,74,0.4)]" href="add.html">
+<iconify-icon class="text-[20px]" icon="ph:plus-circle-fill"></iconify-icon>
+          记一笔
+        </a>
+</section>
+<section class="mt-4 grid grid-cols-2 gap-3">
+<div class="rounded-3xl bg-white p-4 border border-[#FFE4E9] shadow-[0_8px_20px_-16px_rgba(255,143,171,0.9)]">
+<div class="flex items-center gap-1.5 text-[#A0A0A0]">
+<iconify-icon class="text-[16px]" icon="ph:arrow-up-right"></iconify-icon>
+<span class="text-[12px]">今日支出</span>
+</div>
+<p class="mt-2 text-[22px] font-bold text-[#4A4A4A]">¥214.50</p>
+<p class="mt-1 text-[11px] text-[#A0A0A0]">已记 4 笔 · 昨日 ¥235.30</p>
+</div>
+<div class="rounded-3xl bg-white p-4 border border-[#FFE4E9] shadow-[0_8px_20px_-16px_rgba(255,143,171,0.9)]">
+<div class="flex items-center gap-1.5 text-[#A0A0A0]">
+<iconify-icon class="text-[16px]" icon="ph:arrow-down-left"></iconify-icon>
+<span class="text-[12px]">今日收入</span>
+</div>
+<p class="mt-2 text-[22px] font-bold text-[#7BC8A4]">¥0.00</p>
+<p class="mt-1 text-[11px] text-[#A0A0A0]">工资 ¥8,000.00 已于 9/10 到账</p>
+</div>
+</section>
+<section class="mt-4 rounded-3xl bg-white p-4 border border-[#FFE4E9]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:target"></iconify-icon>
+<span class="text-[14px] font-semibold text-[#4A4A4A]">9月预算</span>
+</div>
+<a class="text-[12px] text-[#FF8FAB] flex items-center gap-0.5" href="budget.html">
+            查看预算 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon>
+</a>
+</div>
+<div class="mt-3 flex items-end justify-between">
+<p class="text-[13px] text-[#4A4A4A]"><span class="text-[18px] font-bold">¥4,286.50</span> / ¥5,000.00</p>
+<p class="text-[12px] font-semibold text-[#C9A227]">已用 85.7%</p>
+</div>
+<div class="mt-2 h-2.5 w-full rounded-full bg-[#FFE4E9] overflow-hidden">
+<div class="h-full w-[86%] rounded-full bg-[#FFEAA7]"></div>
+</div>
+<p class="mt-2 flex items-center gap-1.5 text-[11px] text-[#A0A0A0]">
+<iconify-icon class="text-[14px] text-[#C9A227]" icon="ph:warning-circle"></iconify-icon>
+          预算剩余 ¥713.50，建议日为 ¥93.34
+        </p>
+</section>
+<section class="mt-5">
+<div class="flex items-center justify-between">
+<h2 class="text-[15px] font-bold text-[#4A4A4A]">快捷记账</h2>
+<a class="text-[12px] text-[#A0A0A0]" href="add.html">全部分类</a>
+</div>
+<div class="mt-3 grid grid-cols-4 gap-3">
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[22px]">🍜</span>
+<span class="text-[11px] text-[#4A4A4A]">餐饮</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-[22px]">🚌</span>
+<span class="text-[11px] text-[#4A4A4A]">交通</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-[22px]">🛍️</span>
+<span class="text-[11px] text-[#4A4A4A]">购物</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#FFF6DC] flex items-center justify-center text-[22px]">🎬</span>
+<span class="text-[11px] text-[#4A4A4A]">娱乐</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#FFE9EC] flex items-center justify-center text-[22px]">💊</span>
+<span class="text-[11px] text-[#4A4A4A]">医疗</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#E9F1FF] flex items-center justify-center text-[22px]">📚</span>
+<span class="text-[11px] text-[#4A4A4A]">教育</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#F3EDFF] flex items-center justify-center text-[22px]">🏠</span>
+<span class="text-[11px] text-[#4A4A4A]">住房</span>
+</a>
+<a class="flex flex-col items-center gap-1.5" href="add.html">
+<span class="w-12 h-12 rounded-2xl bg-[#F5F5F5] flex items-center justify-center text-[#A0A0A0]">
+<iconify-icon class="text-[22px]" icon="ph:dots-three-circle"></iconify-icon>
+</span>
+<span class="text-[11px] text-[#4A4A4A]">更多</span>
+</a>
+</div>
+</section>
+<section class="mt-6">
+<div class="flex items-center justify-between">
+<h2 class="text-[15px] font-bold text-[#4A4A4A]">最近记录</h2>
+<a class="text-[12px] text-[#FF8FAB] flex items-center gap-0.5" href="bills.html">
+            查看全部 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon>
+</a>
+</div>
+<ul class="mt-3 space-y-2.5">
+<li class="rounded-3xl bg-white px-4 py-3 border border-[#FFE4E9] flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[19px]">🍜</span>
+<div class="flex-1 min-w-0">
+<p class="text-[14px] font-semibold text-[#4A4A4A] truncate">午餐 · 公司楼下简餐</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">支付宝 · 今天 12:20</p>
+</div>
+<span class="text-[15px] font-semibold text-[#4A4A4A]">-¥28.00</span>
+</li>
+<li class="rounded-3xl bg-white px-4 py-3 border border-[#FFE4E9] flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-[19px]">🚌</span>
+<div class="flex-1 min-w-0">
+<p class="text-[14px] font-semibold text-[#4A4A4A] truncate">地铁通勤</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">支付宝 · 今天 08:35</p>
+</div>
+<span class="text-[15px] font-semibold text-[#4A4A4A]">-¥6.00</span>
+</li>
+<li class="rounded-3xl bg-white px-4 py-3 border border-[#FFE4E9] flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#FFF6DC] flex items-center justify-center text-[19px]">🥛</span>
+<div class="flex-1 min-w-0">
+<p class="text-[14px] font-semibold text-[#4A4A4A] truncate">早餐 · 豆浆油条</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">微信 · 今天 07:40</p>
+</div>
+<span class="text-[15px] font-semibold text-[#4A4A4A]">-¥12.50</span>
+</li>
+<li class="rounded-3xl bg-white px-4 py-3 border border-[#FFE4E9] flex items-center gap-3">
+<span class="w-10 h-10 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-[19px]">🛍️</span>
+<div class="flex-1 min-w-0">
+<p class="text-[14px] font-semibold text-[#4A4A4A] truncate">超市生活用品</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">微信 · 9月22日 19:12</p>
+</div>
+<span class="text-[15px] font-semibold text-[#4A4A4A]">-¥156.80</span>
+</li>
+</ul>
+</section>
+</main>
+<a class="absolute bottom-[92px] right-4 z-20 flex items-center gap-1.5 h-12 pl-4 pr-5 rounded-full bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white font-semibold text-[15px] shadow-[0_12px_26px_-10px_rgba(255,143,171,0.95)]" href="add.html">
+<iconify-icon class="text-[22px]" icon="ph:plus-circle-fill"></iconify-icon>
+      记一笔
+    </a>
+<nav class="shrink-0 bg-white border-t border-[#FFE4E9] px-2 pt-2 pb-3 grid grid-cols-5">
+<a class="flex flex-col items-center gap-1 text-[#FF8FAB]" href="home.html">
+<iconify-icon class="text-[22px]" icon="ph:house-fill"></iconify-icon>
+<span class="text-[11px] font-semibold">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="bills.html">
+<iconify-icon class="text-[22px]" icon="ph:receipt"></iconify-icon>
+<span class="text-[11px]">账单</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="stats.html">
+<iconify-icon class="text-[22px]" icon="ph:chart-pie-slice"></iconify-icon>
+<span class="text-[11px]">统计</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="budget.html">
+<iconify-icon class="text-[22px]" icon="ph:wallet"></iconify-icon>
+<span class="text-[11px]">预算</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="profile.html">
+<iconify-icon class="text-[22px]" icon="ph:user"></iconify-icon>
+<span class="text-[11px]">我的</span>
+</a>
+</nav>
+<div class="hidden absolute left-5 right-5 top-[52%] z-40 rounded-3xl bg-[#4A4A4A]/95 text-white text-[13px] leading-relaxed px-4 py-3 shadow-lg" id="tip"></div>
+</div>
+<script>
+    var tipTimer = null;
+    function showTip(message) {
+      var tip = document.getElementById('tip');
+      tip.textContent = message;
+      tip.classList.remove('hidden');
+      if (tipTimer) {
+        clearTimeout(tipTimer);
+      }
+      tipTimer = setTimeout(function () {
+        tip.classList.add('hidden');
+      }, 2600);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>记小账 · 我的</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-[#F4EAEC]">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FFF9F9] overflow-hidden flex flex-col">
+<span class="hidden bg-[#E9E9E9] translate-x-0 translate-x-5 bg-[#A8E6CF]"></span>
+<header class="shrink-0 px-5 pt-6 pb-3 flex items-center justify-between">
+<h1 class="text-[22px] font-bold text-[#4A4A4A]">我的</h1>
+<button class="w-9 h-9 rounded-full bg-white border border-[#FFE4E9] flex items-center justify-center text-[#FF8FAB]" onclick="showTip('账号已开启本地加密存储，敏感信息不上传')" type="button">
+<iconify-icon class="text-[18px]" icon="ph:shield-check"></iconify-icon>
+</button>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 pb-24 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<section class="rounded-[28px] bg-gradient-to-br from-[#FFE4E9] via-[#FFD9E1] to-[#FFC7D3] p-5">
+<div class="flex items-center gap-4">
+<span class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-[30px] shadow-[0_8px_18px_-12px_rgba(74,74,74,0.6)]">🌸</span>
+<div class="flex-1">
+<p class="text-[18px] font-bold text-[#4A4A4A]" id="nickname">小樱</p>
+<p class="mt-1 text-[11px] text-[#4A4A4A]/70">已绑定 138****6688 · xiaoying@mail.com</p>
+</div>
+<button class="h-8 px-3 rounded-full bg-white/80 text-[12px] font-semibold text-[#FF8FAB]" onclick="openProfileModal()" type="button">编辑资料</button>
+</div>
+<div class="mt-4 grid grid-cols-3 gap-2 text-center">
+<div class="rounded-2xl bg-white/70 py-2">
+<p class="text-[16px] font-bold text-[#4A4A4A]">128</p>
+<p class="text-[11px] text-[#4A4A4A]/70 mt-0.5">记账天数</p>
+</div>
+<div class="rounded-2xl bg-white/70 py-2">
+<p class="text-[16px] font-bold text-[#4A4A4A]">862</p>
+<p class="text-[11px] text-[#4A4A4A]/70 mt-0.5">累计笔数</p>
+</div>
+<div class="rounded-2xl bg-white/70 py-2">
+<p class="text-[16px] font-bold text-[#4A4A4A]">12</p>
+<p class="text-[11px] text-[#4A4A4A]/70 mt-0.5">连续记账（天）</p>
+</div>
+</div>
+</section>
+<section class="mt-4 rounded-[28px] bg-white border border-[#FFE4E9] px-4">
+<h2 class="pt-4 pb-1 text-[13px] font-bold text-[#A0A0A0]">账户信息</h2>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('已绑定手机号 138****6688，更换需短信验证')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:device-mobile"></iconify-icon>绑定手机号
+          </span>
+<span class="text-[13px] text-[#A0A0A0] flex items-center gap-1">138****6688 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('邮箱已验证，用于找回密码与账单月报')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:envelope-simple"></iconify-icon>绑定邮箱
+          </span>
+<span class="text-[13px] text-[#A0A0A0] flex items-center gap-1">xiaoying@mail.com <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+<button class="w-full flex items-center justify-between py-3.5" onclick="showTip('原型演示：密码修改需短信验证码校验')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:lock-simple"></iconify-icon>修改密码
+          </span>
+<iconify-icon class="text-[14px] text-[#A0A0A0]" icon="ph:caret-right"></iconify-icon>
+</button>
+</section>
+<section class="mt-4 rounded-[28px] bg-white border border-[#FFE4E9] px-4">
+<h2 class="pt-4 pb-1 text-[13px] font-bold text-[#A0A0A0]">个性化设置</h2>
+<div class="py-3.5 border-b border-[#FFF0F3]">
+<div class="flex items-center gap-3">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:moon"></iconify-icon>
+<span class="text-[14px] text-[#4A4A4A]">主题模式</span>
+</div>
+<div class="mt-2.5 grid grid-cols-3 gap-2 p-1 rounded-2xl bg-[#FFF9F9] border border-[#FFE4E9]">
+<button class="theme-btn h-8 rounded-xl text-[12px] font-semibold bg-white text-[#FF8FAB] shadow-sm" data-theme="浅色" onclick="setTheme(this)" type="button">浅色</button>
+<button class="theme-btn h-8 rounded-xl text-[12px] text-[#A0A0A0]" data-theme="深色" onclick="setTheme(this)" type="button">深色</button>
+<button class="theme-btn h-8 rounded-xl text-[12px] text-[#A0A0A0]" data-theme="跟随系统" onclick="setTheme(this)" type="button">跟随系统</button>
+</div>
+</div>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('每日提醒时间已设为 20:00，与「预算」提醒保持一致')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:bell-simple"></iconify-icon>记账提醒时间
+          </span>
+<span class="text-[13px] text-[#A0A0A0] flex items-center gap-1">每天 20:00 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+<button class="w-full flex items-center justify-between py-3.5" onclick="showTip('默认分类已设为「餐饮」，进入记账页会自动选中')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:tag"></iconify-icon>默认分类
+          </span>
+<span class="text-[13px] text-[#A0A0A0] flex items-center gap-1">餐饮 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+</section>
+<section class="mt-4 rounded-[28px] bg-white border border-[#FFE4E9] px-4">
+<h2 class="pt-4 pb-1 text-[13px] font-bold text-[#A0A0A0]">数据管理</h2>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('本地数据已备份（2026-09-23 04:23），共 862 笔记录')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:cloud-arrow-up"></iconify-icon>本地数据备份
+          </span>
+<span class="text-[12px] text-[#A0A0A0] flex items-center gap-1">上次备份 04:23 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+<div class="py-3.5 border-b border-[#FFF0F3] flex items-center justify-between">
+<div class="flex items-start gap-3">
+<iconify-icon class="text-[18px] text-[#FF8FAB] mt-0.5" icon="ph:cloud-check"></iconify-icon>
+<div>
+<p class="text-[14px] text-[#4A4A4A]">云端同步</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">仅在 Wi-Fi 下同步，账单与预算已加密</p>
+</div>
+</div>
+<button class="switch w-12 h-7 rounded-full bg-[#A8E6CF] flex items-center px-0.5" onclick="toggleSwitch(this)" type="button">
+<span class="knob w-6 h-6 rounded-full bg-white shadow translate-x-5"></span>
+</button>
+</div>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('已生成导出文件：记小账_2026-09.xlsx，包含 128 笔账单')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:download-simple"></iconify-icon>导出 Excel / CSV
+          </span>
+<iconify-icon class="text-[14px] text-[#A0A0A0]" icon="ph:caret-right"></iconify-icon>
+</button>
+<button class="w-full flex items-center justify-between py-3.5" onclick="openTrashModal()" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8B94]" icon="ph:trash"></iconify-icon>撤回删除
+          </span>
+<span class="text-[12px] text-[#FF8B94] flex items-center gap-1">2 条可恢复 <iconify-icon class="text-[14px]" icon="ph:caret-right"></iconify-icon></span>
+</button>
+</section>
+<section class="mt-4 rounded-[28px] bg-white border border-[#FFE4E9] px-4">
+<h2 class="pt-4 pb-1 text-[13px] font-bold text-[#A0A0A0]">关于</h2>
+<button class="w-full flex items-center justify-between py-3.5 border-b border-[#FFF0F3]" onclick="showTip('反馈已进入处理队列，我们会在 1 个工作日内回复')" type="button">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:chat-circle-dots"></iconify-icon>帮助与反馈
+          </span>
+<iconify-icon class="text-[14px] text-[#A0A0A0]" icon="ph:caret-right"></iconify-icon>
+</button>
+<div class="py-3.5 flex items-center justify-between">
+<span class="flex items-center gap-3 text-[14px] text-[#4A4A4A]">
+<iconify-icon class="text-[18px] text-[#FF8FAB]" icon="ph:info"></iconify-icon>版本信息
+          </span>
+<span class="text-[12px] text-[#A0A0A0]">记小账 v1.0.0</span>
+</div>
+</section>
+<p class="mt-6 text-center text-[11px] text-[#C4C4C4]">本地优先存储 · 数据加密 · 新用户 30 秒即可完成第一笔记账</p>
+</main>
+<nav class="shrink-0 bg-white border-t border-[#FFE4E9] px-2 pt-2 pb-3 grid grid-cols-5">
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="home.html">
+<iconify-icon class="text-[22px]" icon="ph:house"></iconify-icon>
+<span class="text-[11px]">首页</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="bills.html">
+<iconify-icon class="text-[22px]" icon="ph:receipt"></iconify-icon>
+<span class="text-[11px]">账单</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="stats.html">
+<iconify-icon class="text-[22px]" icon="ph:chart-pie-slice"></iconify-icon>
+<span class="text-[11px]">统计</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#A0A0A0]" href="budget.html">
+<iconify-icon class="text-[22px]" icon="ph:wallet"></iconify-icon>
+<span class="text-[11px]">预算</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#FF8FAB]" href="profile.html">
+<iconify-icon class="text-[22px]" icon="ph:user-fill"></iconify-icon>
+<span class="text-[11px] font-semibold">我的</span>
+</a>
+</nav>
+<div class="hidden absolute inset-0 z-40 bg-[#4A4A4A]/35" id="trashModal">
+<div class="absolute left-0 right-0 bottom-0 rounded-t-[28px] bg-white px-5 pt-5 pb-6">
+<div class="flex items-center justify-between">
+<h3 class="text-[16px] font-bold text-[#4A4A4A]">撤回删除记录</h3>
+<button class="w-8 h-8 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="closeTrashModal()" type="button">
+<iconify-icon class="text-[16px]" icon="ph:x"></iconify-icon>
+</button>
+</div>
+<p class="mt-1 text-[12px] text-[#A0A0A0]">删除后 7 天内可恢复，超期将永久清除</p>
+<ul class="mt-4 space-y-2.5">
+<li class="rounded-2xl bg-[#FFF9F9] border border-[#FFE4E9] px-4 py-3 flex items-center gap-3" data-restore="">
+<span class="w-9 h-9 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[17px]">☕</span>
+<div class="flex-1">
+<p class="text-[13px] font-semibold text-[#4A4A4A]">拿铁咖啡</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · ¥26.00 · 9月22日 删除</p>
+</div>
+<button class="h-8 px-3 rounded-xl bg-[#FFE4E9] text-[#FF8FAB] text-[12px] font-semibold" onclick="restoreItem(this)" type="button">恢复</button>
+</li>
+<li class="rounded-2xl bg-[#FFF9F9] border border-[#FFE4E9] px-4 py-3 flex items-center gap-3" data-restore="">
+<span class="w-9 h-9 rounded-2xl bg-[#FFE4E9] flex items-center justify-center text-[17px]">🍎</span>
+<div class="flex-1">
+<p class="text-[13px] font-semibold text-[#4A4A4A]">水果拼盘</p>
+<p class="text-[11px] text-[#A0A0A0] mt-0.5">餐饮 · ¥38.50 · 9月21日 删除</p>
+</div>
+<button class="h-8 px-3 rounded-xl bg-[#FFE4E9] text-[#FF8FAB] text-[12px] font-semibold" onclick="restoreItem(this)" type="button">恢复</button>
+</li>
+</ul>
+</div>
+</div>
+<div class="hidden absolute inset-0 z-40 bg-[#4A4A4A]/35" id="profileModal">
+<div class="absolute left-0 right-0 bottom-0 rounded-t-[28px] bg-white px-5 pt-5 pb-6">
+<div class="flex items-center justify-between">
+<h3 class="text-[16px] font-bold text-[#4A4A4A]">编辑资料</h3>
+<button class="w-8 h-8 rounded-full bg-[#FFF9F9] flex items-center justify-center text-[#A0A0A0]" onclick="closeProfileModal()" type="button">
+<iconify-icon class="text-[16px]" icon="ph:x"></iconify-icon>
+</button>
+</div>
+<div class="mt-4 flex items-center gap-4">
+<span class="w-14 h-14 rounded-full bg-gradient-to-br from-[#FFE4E9] to-[#FFB7C5] flex items-center justify-center text-[26px]">🌸</span>
+<button class="h-9 px-3.5 rounded-2xl bg-[#FFE4E9] text-[#FF8FAB] text-[12px] font-semibold" onclick="showTip('原型演示：头像可从相册或预设插画中选择')" type="button">更换头像</button>
+</div>
+<label class="mt-4 block text-[12px] text-[#A0A0A0]">昵称</label>
+<input class="mt-1.5 w-full h-11 rounded-2xl border border-[#FFE4E9] bg-[#FFF9F9] px-3.5 text-[14px] text-[#4A4A4A] focus:outline-none focus:border-[#FFB7C5]" id="nicknameInput" maxlength="12" type="text" value="小樱"/>
+<div class="mt-5 grid grid-cols-2 gap-3">
+<button class="h-11 rounded-2xl bg-[#F5F5F5] text-[#4A4A4A] text-[14px] font-semibold" onclick="closeProfileModal()" type="button">取消</button>
+<button class="h-11 rounded-2xl bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white text-[14px] font-semibold" onclick="saveProfile()" type="button">保存</button>
+</div>
+</div>
+</div>
+<div class="hidden absolute left-5 right-5 top-[44%] z-50 rounded-3xl bg-[#4A4A4A]/95 text-white text-[13px] leading-relaxed px-4 py-3 shadow-lg" id="tip"></div>
+</div>
+<script>
+    var tipTimer = null;
+
+    function showTip(message) {
+      var tip = document.getElementById('tip');
+      tip.textContent = message;
+      tip.classList.remove('hidden');
+      if (tipTimer) {
+        clearTimeout(tipTimer);
+      }
+      tipTimer = setTimeout(function () {
+        tip.classList.add('hidden');
+      }, 2400);
+    }
+
+    function setTheme(btn) {
+      document.querySelectorAll('.theme-btn').forEach(function (item) {
+        item.className = 'theme-btn h-8 rounded-xl text-[12px] text-[#A0A0A0]';
+      });
+      btn.className = 'theme-btn h-8 rounded-xl text-[12px] font-semibold bg-white text-[#FF8FAB] shadow-sm';
+      var theme = btn.getAttribute('data-theme');
+      if (theme === '浅色') {
+        showTip('已选择浅色模式，当前为默认主题');
+      } else if (theme === '深色') {
+        showTip('已记录深色模式偏好，将在下次启动时应用');
+      } else {
+        showTip('已选择跟随系统，将按设备外观自动切换');
+      }
+    }
+
+    function toggleSwitch(btn) {
+      var knob = btn.querySelector('.knob');
+      var isOn = btn.classList.contains('bg-[#A8E6CF]');
+      if (isOn) {
+        btn.classList.remove('bg-[#A8E6CF]');
+        btn.classList.add('bg-[#E9E9E9]');
+        knob.classList.remove('translate-x-5');
+        knob.classList.add('translate-x-0');
+        showTip('云端同步已关闭，数据仅保存在本机');
+      } else {
+        btn.classList.remove('bg-[#E9E9E9]');
+        btn.classList.add('bg-[#A8E6CF]');
+        knob.classList.remove('translate-x-0');
+        knob.classList.add('translate-x-5');
+        showTip('云端同步已开启，将在 Wi-Fi 下自动同步');
+      }
+    }
+
+    function openTrashModal() {
+      document.getElementById('trashModal').classList.remove('hidden');
+    }
+
+    function closeTrashModal() {
+      document.getElementById('trashModal').classList.add('hidden');
+    }
+
+    function restoreItem(btn) {
+      var row = btn.closest('[data-restore]');
+      row.classList.add('hidden');
+      showTip('已恢复该笔记录，可在「账单」中查看');
+    }
+
+    function openProfileModal() {
+      document.getElementById('profileModal').classList.remove('hidden');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.add('hidden');
+    }
+
+    function saveProfile() {
+      var value = document.getElementById('nicknameInput').value.trim();
+      if (!value) {
+        showTip('昵称不能为空');
+        return;
+      }
+      document.getElementById('nickname').textContent = value;
+      closeProfileModal();
+      showTip('资料已保存');
+    }
+  </script>
+</body>
+</html>

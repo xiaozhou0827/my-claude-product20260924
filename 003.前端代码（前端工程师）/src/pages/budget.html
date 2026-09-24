@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>记小账 · 预算</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+  <div class="phone-container">
+    <!-- 头部 -->
+    <header class="page-header">
+      <div class="flex items-center justify-between w-full">
+        <h1 class="page-title">预算</h1>
+        <button class="h-9 px-3.5 rounded-full bg-white border border-sakura-light flex items-center gap-1.5 text-sm text-sakura-deep font-semibold" onclick="openModal('budgetModal')">
+          <iconify-icon icon="ph:pencil-simple"></iconify-icon>
+          调整预算
+        </button>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="scroll-area">
+      <!-- 月度预算概览 -->
+      <section class="card mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-semibold text-main">9月月度总预算</span>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-yellow-100 text-warning font-semibold">已用 85.7% · 预警</span>
+        </div>
+        <div class="grid grid-cols-2 items-center gap-4">
+          <div class="relative h-40">
+            <div id="budgetRing" class="w-full h-full"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <p class="text-3xl font-bold text-main leading-none" id="ringPercent">85.7%</p>
+              <p class="text-xs text-sub mt-1">已使用</p>
+            </div>
+          </div>
+          <div class="space-y-2.5">
+            <div class="rounded-xl bg-bg-secondary px-3 py-2.5">
+              <p class="text-xs text-sub">本月预算</p>
+              <p class="text-base font-semibold text-main mt-0.5 number-font">¥5,000.00</p>
+            </div>
+            <div class="rounded-xl bg-bg-secondary px-3 py-2.5">
+              <p class="text-xs text-sub">已支出</p>
+              <p class="text-base font-semibold text-danger mt-0.5 number-font">¥4,286.50</p>
+            </div>
+            <div class="rounded-xl bg-bg-secondary px-3 py-2.5">
+              <p class="text-xs text-sub">剩余可用</p>
+              <p class="text-base font-semibold text-success mt-0.5 number-font">¥713.50</p>
+            </div>
+          </div>
+        </div>
+        <p class="mt-3 flex items-start gap-1.5 text-xs text-sub">
+          <iconify-icon icon="ph:warning-circle" class="text-warning mt-0.5"></iconify-icon>
+          已使用 85.7%，超过 80% 预警线；按剩余天数计算，日均可用 ¥93.34
+        </p>
+      </section>
+
+      <!-- 分类预算 -->
+      <section class="mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-main">分类预算</h2>
+          <button class="text-xs text-sakura-deep flex items-center gap-0.5" onclick="showToast('可新增分类预算，支持餐饮、交通、购物等 8 个分类')">
+            <iconify-icon icon="ph:plus"></iconify-icon>
+            新增分类
+          </button>
+        </div>
+        <div class="space-y-3">
+          <!-- 餐饮 -->
+          <div class="card p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-9 h-9 rounded-2xl bg-sakura-light flex items-center justify-center text-lg">🍜</span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-main">餐饮</p>
+                <p class="text-xs text-sub">¥1,500.30 / ¥1,500.00</p>
+              </div>
+              <span class="text-xs font-semibold text-danger">已超支 ¥0.30</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-sakura-light overflow-hidden">
+              <div class="h-full w-full rounded-full bg-danger"></div>
+            </div>
+          </div>
+          <!-- 购物 -->
+          <div class="card p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-9 h-9 rounded-2xl bg-[#EFEFFA] flex items-center justify-center text-lg">🛍️</span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-main">购物</p>
+                <p class="text-xs text-sub">¥1,071.60 / ¥1,200.00</p>
+              </div>
+              <span class="text-xs font-semibold text-warning">已用 89%</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-sakura-light overflow-hidden">
+              <div class="h-full w-[89%] rounded-full bg-lemon"></div>
+            </div>
+          </div>
+          <!-- 住房 -->
+          <div class="card p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-9 h-9 rounded-2xl bg-[#F3EDFF] flex items-center justify-center text-lg">🏠</span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-main">住房</p>
+                <p class="text-xs text-sub">¥620.00 / ¥800.00</p>
+              </div>
+              <span class="text-xs font-semibold text-success">已用 78%</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-sakura-light overflow-hidden">
+              <div class="h-full w-[78%] rounded-full bg-mint"></div>
+            </div>
+          </div>
+          <!-- 娱乐 -->
+          <div class="card p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-9 h-9 rounded-2xl bg-[#FFF6DC] flex items-center justify-center text-lg">🎬</span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-main">娱乐</p>
+                <p class="text-xs text-sub">¥514.40 / ¥800.00</p>
+              </div>
+              <span class="text-xs font-semibold text-success">已用 64%</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-sakura-light overflow-hidden">
+              <div class="h-full w-[64%] rounded-full bg-mint"></div>
+            </div>
+          </div>
+          <!-- 交通 -->
+          <div class="card p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-9 h-9 rounded-2xl bg-[#E3F5EC] flex items-center justify-center text-lg">🚌</span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-main">交通</p>
+                <p class="text-xs text-sub">¥428.65 / ¥600.00</p>
+              </div>
+              <span class="text-xs font-semibold text-success">已用 71%</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-sakura-light overflow-hidden">
+              <div class="h-full w-[71%] rounded-full bg-mint"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-4 rounded-xl bg-white border border-sakura-light px-4 py-2.5 text-xs text-sub">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-mint"></span>正常 &lt; 80%</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-lemon"></span>预警 80%-100%</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-danger"></span>超支 &gt; 100%</span>
+        </div>
+      </section>
+
+      <!-- 预算提醒设置 -->
+      <section class="card mb-4">
+        <h2 class="font-bold text-main mb-3">预算提醒</h2>
+        <div class="flex items-center justify-between py-3 border-b border-sakura-light">
+          <div>
+            <p class="text-sm text-main">使用达 80% 时提醒</p>
+            <p class="text-xs text-sub mt-0.5">通过通知栏推送，每天最多一次</p>
+          </div>
+          <button class="switch w-12 h-7 rounded-full bg-mint flex items-center px-0.5" onclick="toggleSwitch(this)">
+            <span class="knob w-6 h-6 rounded-full bg-white shadow translate-x-5"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between py-3 border-b border-sakura-light">
+          <div>
+            <p class="text-sm text-main">超支时强制提醒</p>
+            <p class="text-xs text-sub mt-0.5">记账保存后立即弹出提示</p>
+          </div>
+          <button class="switch w-12 h-7 rounded-full bg-mint flex items-center px-0.5" onclick="toggleSwitch(this)">
+            <span class="knob w-6 h-6 rounded-full bg-white shadow translate-x-5"></span>
+          </button>
+        </div>
+        <button class="mt-3 w-full flex items-center justify-between rounded-xl bg-bg-secondary px-4 py-3" onclick="showToast('提醒时间 20:00，可在「我的 - 提醒设置」修改')">
+          <span class="text-sm text-main">每日提醒时间</span>
+          <span class="text-sm text-sakura-deep font-semibold flex items-center gap-1">
+            20:00
+            <iconify-icon icon="ph:caret-right"></iconify-icon>
+          </span>
+        </button>
+      </section>
+
+      <!-- 提醒记录 -->
+      <section>
+        <h2 class="font-bold text-main mb-3">提醒记录</h2>
+        <div class="space-y-3">
+          <div class="card flex items-start gap-3">
+            <span class="w-8 h-8 rounded-2xl bg-red-100 flex items-center justify-center text-danger">
+              <iconify-icon icon="ph:warning-circle" class="text-lg"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm text-main">餐饮预算已超支 ¥0.30</p>
+              <p class="text-xs text-sub mt-0.5">9月23日 08:00 · 强制提醒</p>
+            </div>
+          </div>
+          <div class="card flex items-start gap-3">
+            <span class="w-8 h-8 rounded-2xl bg-yellow-100 flex items-center justify-center text-warning">
+              <iconify-icon icon="ph:bell-ringing" class="text-lg"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm text-main">购物预算使用已达 80%</p>
+              <p class="text-xs text-sub mt-0.5">9月18日 20:00 · 预警提醒</p>
+            </div>
+          </div>
+          <div class="card flex items-start gap-3">
+            <span class="w-8 h-8 rounded-2xl bg-mint/30 flex items-center justify-center text-success">
+              <iconify-icon icon="ph:check-circle" class="text-lg"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm text-main">8月预算保持结余 ¥25.00</p>
+              <p class="text-xs text-sub mt-0.5">9月1日 09:00 · 月度总结</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FAB -->
+    <a href="add.html" class="fab">
+      <iconify-icon icon="ph:plus-circle"></iconify-icon>
+      记一笔
+    </a>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <iconify-icon icon="ph:house"></iconify-icon>
+        <span>首页</span>
+      </a>
+      <a href="bills.html" class="nav-item">
+        <iconify-icon icon="ph:receipt"></iconify-icon>
+        <span>账单</span>
+      </a>
+      <a href="stats.html" class="nav-item">
+        <iconify-icon icon="ph:chart-pie-slice"></iconify-icon>
+        <span>统计</span>
+      </a>
+      <a href="budget.html" class="nav-item active">
+        <iconify-icon icon="ph:wallet"></iconify-icon>
+        <span>预算</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <iconify-icon icon="ph:user"></iconify-icon>
+        <span>我的</span>
+      </a>
+    </nav>
+
+    <!-- 调整预算弹窗 -->
+    <div class="hidden fixed inset-0 bg-black/40 z-40 items-end" id="budgetModal">
+      <div class="bg-white w-full max-w-md mx-auto rounded-t-3xl p-5 pb-8 slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-main text-lg">调整月度总预算</h3>
+          <button class="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center" onclick="closeModal('budgetModal')">
+            <iconify-icon icon="ph:x"></iconify-icon>
+          </button>
+        </div>
+        <p class="text-xs text-sub mb-4">本月已支出 ¥4,286.50，选择新预算后立即生效</p>
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <button class="h-12 rounded-2xl border border-sakura-light bg-bg-secondary text-sm font-semibold text-main" onclick="selectBudget(this, 4000)">¥4,000</button>
+          <button class="h-12 rounded-2xl border border-sakura bg-sakura-light text-sm font-semibold text-sakura-deep" onclick="selectBudget(this, 5000)">¥5,000</button>
+          <button class="h-12 rounded-2xl border border-sakura-light bg-bg-secondary text-sm font-semibold text-main" onclick="selectBudget(this, 6000)">¥6,000</button>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button class="h-11 rounded-2xl bg-gray-100 text-main text-sm font-semibold" onclick="closeModal('budgetModal')">取消</button>
+          <button class="h-11 rounded-2xl bg-gradient-to-r from-sakura-deep to-sakura text-white text-sm font-semibold" onclick="saveBudget()">保存预算</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="globalToast"></div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script>
+    let selectedBudget = 5000;
+    const spent = 4286.50;
+
+    // 环形图
+    const ringChart = echarts.init(document.getElementById('budgetRing'));
+    ringChart.setOption({
+      series: [{
+        type: 'pie',
+        radius: ['70%', '88%'],
+        center: ['50%', '50%'],
+        startAngle: 90,
+        silent: true,
+        label: { show: false },
+        data: [
+          { value: spent, itemStyle: { color: '#FFEAA7', borderRadius: 12 } },
+          { value: 713.50, itemStyle: { color: '#FFE4E9' } }
+        ]
+      }]
+    });
+
+    function toggleSwitch(btn) {
+      const knob = btn.querySelector('.knob');
+      const isOn = btn.classList.contains('bg-mint');
+      if (isOn) {
+        btn.classList.remove('bg-mint');
+        btn.classList.add('bg-gray-200');
+        knob.classList.remove('translate-x-5');
+        knob.classList.add('translate-x-0');
+        showToast('已关闭该提醒');
+      } else {
+        btn.classList.remove('bg-gray-200');
+        btn.classList.add('bg-mint');
+        knob.classList.remove('translate-x-0');
+        knob.classList.add('translate-x-5');
+        showToast('已开启该提醒');
+      }
+    }
+
+    function selectBudget(btn, amount) {
+      selectedBudget = amount;
+      document.querySelectorAll('[onclick^="selectBudget"]').forEach(b => {
+        b.className = b.className.replace('border-sakura bg-sakura-light text-sakura-deep', 'border-sakura-light bg-bg-secondary text-main');
+      });
+      btn.className = btn.className.replace('border-sakura-light bg-bg-secondary text-main', 'border-sakura bg-sakura-light text-sakura-deep');
+    }
+
+    function saveBudget() {
+      const percent = spent / selectedBudget * 100;
+      const left = selectedBudget - spent;
+      document.getElementById('ringPercent').textContent = percent.toFixed(1) + '%';
+      const leftNode = document.querySelector('#budgetRing').parentElement.nextElementSibling.querySelector('.text-base.font-semibold.text-success');
+      if (leftNode) leftNode.textContent = formatMoney(left);
+      ringChart.setOption({
+        series: [{
+          data: [
+            { value: spent, itemStyle: { color: percent > 100 ? '#FF8B94' : percent > 80 ? '#FFEAA7' : '#A8E6CF', borderRadius: 12 } },
+            { value: Math.max(left, 0), itemStyle: { color: '#FFE4E9' } }
+          ]
+        }]
+      });
+      closeModal('budgetModal');
+      showToast('月度预算已保存，进度与预警状态同步更新');
+    }
+
+    window.addEventListener('resize', () => ringChart.resize());
+  </script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>记小账 · 记一笔</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-[#F4EAEC]">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FFF9F9] overflow-hidden flex flex-col">
+<header class="shrink-0 px-4 pt-5 pb-3 flex items-center justify-between">
+<a class="w-9 h-9 rounded-full bg-white border border-[#FFE4E9] flex items-center justify-center text-[#4A4A4A]" href="home.html">
+<iconify-icon class="text-[18px]" icon="ph:caret-left"></iconify-icon>
+</a>
+<h1 class="text-[16px] font-bold text-[#4A4A4A]">记一笔</h1>
+<button class="w-9 h-9 rounded-full bg-white border border-[#FFE4E9] flex items-center justify-center text-[#FF8FAB]" onclick="showTip('分类顺序可在「我的 - 默认分类」中调整')" type="button">
+<iconify-icon class="text-[18px]" icon="ph:sliders-horizontal"></iconify-icon>
+</button>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 pb-6 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-[#FFE4E9]">
+<button class="h-9 rounded-xl text-[13px] font-semibold bg-white text-[#FF8FAB] shadow-sm" id="btnExpense" onclick="setType('expense')" type="button">支出</button>
+<button class="h-9 rounded-xl text-[13px] font-semibold text-[#A0A0A0]" id="btnIncome" onclick="setType('income')" type="button">收入</button>
+</div>
+<section class="mt-4 rounded-[28px] bg-white border border-[#FFE4E9] px-5 py-5 shadow-[0_10px_24px_-20px_rgba(255,143,171,1)]">
+<p class="text-[12px] text-[#A0A0A0]">金额</p>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-[26px] font-bold text-[#FF8FAB]">¥</span>
+<span class="text-[40px] font-bold text-[#4A4A4A] leading-none tracking-tight" id="amountText">0.00</span>
+<span class="w-0.5 h-9 bg-[#FFB7C5] inline-block" id="caret"></span>
+</div>
+<div class="mt-4 flex items-center gap-2 text-[12px] text-[#A0A0A0]">
+<span class="px-2.5 py-1 rounded-full bg-[#FFE4E9] text-[#FF8FAB] font-semibold" id="chosenCategory">餐饮</span>
+<span class="px-2.5 py-1 rounded-full bg-[#F5F5F5]" id="chosenPay">微信</span>
+<span class="px-2.5 py-1 rounded-full bg-[#F5F5F5]" id="chosenDate">今天 9月23日</span>
+</div>
+<p class="mt-3 flex items-center gap-1.5 text-[11px] text-[#A0A0A0]" id="hint">
+<iconify-icon class="text-[14px] text-[#FF8FAB]" icon="ph:magic-wand"></iconify-icon>
+          已记住上次分类「餐饮」，3 秒即可完成这笔记录
+        </p>
+</section>
+<section class="mt-5">
+<h2 class="text-[14px] font-bold text-[#4A4A4A]">选择分类</h2>
+<div class="mt-3 grid grid-cols-4 gap-2.5" id="categoryGrid">
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-[#FFE4E9] border border-[#FFB7C5]" data-cat="餐饮" data-emoji="🍜" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">🍜</span>
+<span class="text-[11px] font-semibold text-[#FF8FAB]">餐饮</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="交通" data-emoji="🚌" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">🚌</span>
+<span class="text-[11px] text-[#4A4A4A]">交通</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="购物" data-emoji="🛍️" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">🛍️</span>
+<span class="text-[11px] text-[#4A4A4A]">购物</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="娱乐" data-emoji="🎬" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">🎬</span>
+<span class="text-[11px] text-[#4A4A4A]">娱乐</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="医疗" data-emoji="💊" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">💊</span>
+<span class="text-[11px] text-[#4A4A4A]">医疗</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="教育" data-emoji="📚" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">📚</span>
+<span class="text-[11px] text-[#4A4A4A]">教育</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="住房" data-emoji="🏠" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">🏠</span>
+<span class="text-[11px] text-[#4A4A4A]">住房</span>
+</button>
+<button class="cat-btn flex flex-col items-center gap-1 rounded-2xl py-3 bg-white border border-[#FFE4E9]" data-cat="工资" data-emoji="💰" onclick="pickCategory(this)" type="button">
+<span class="text-[20px]">💰</span>
+<span class="text-[11px] text-[#4A4A4A]">工资</span>
+</button>
+</div>
+</section>
+<section class="mt-5">
+<h2 class="text-[14px] font-bold text-[#4A4A4A]">日期</h2>
+<div class="mt-3 flex items-center gap-2">
+<button class="date-btn h-9 px-3.5 rounded-xl text-[12px] font-semibold bg-[#FFE4E9] text-[#FF8FAB] border border-[#FFB7C5]" data-date="today" onclick="pickDate(this, '今天 9月23日')" type="button">今天</button>
+<button class="date-btn h-9 px-3.5 rounded-xl text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-date="yesterday" onclick="pickDate(this, '昨天 9月22日')" type="button">昨天</button>
+<input class="h-9 flex-1 rounded-xl border border-[#FFE4E9] bg-white px-3 text-[12px] text-[#4A4A4A]" id="dateInput" onchange="pickCustomDate(this)" type="date"/>
+</div>
+</section>
+<section class="mt-5">
+<h2 class="text-[14px] font-bold text-[#4A4A4A]">备注（可选）</h2>
+<input class="mt-3 w-full h-11 rounded-2xl border border-[#FFE4E9] bg-white px-4 text-[13px] text-[#4A4A4A] placeholder-[#C4C4C4] focus:outline-none focus:border-[#FFB7C5]" id="noteInput" maxlength="30" placeholder="例如：和同事拼单奶茶" type="text"/>
+</section>
+<section class="mt-5">
+<h2 class="text-[14px] font-bold text-[#4A4A4A]">支付方式</h2>
+<div class="mt-3 flex flex-wrap gap-2" id="payRow">
+<button class="pay-btn h-9 px-3.5 rounded-xl text-[12px] font-semibold bg-[#E3F5EC] text-[#7BC8A4] border border-[#A8E6CF]" data-pay="微信" onclick="pickPay(this)" type="button">微信</button>
+<button class="pay-btn h-9 px-3.5 rounded-xl text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-pay="支付宝" onclick="pickPay(this)" type="button">支付宝</button>
+<button class="pay-btn h-9 px-3.5 rounded-xl text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-pay="现金" onclick="pickPay(this)" type="button">现金</button>
+<button class="pay-btn h-9 px-3.5 rounded-xl text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-pay="信用卡" onclick="pickPay(this)" type="button">信用卡</button>
+<button class="pay-btn h-9 px-3.5 rounded-xl text-[12px] bg-white text-[#4A4A4A] border border-[#FFE4E9]" data-pay="银行卡" onclick="pickPay(this)" type="button">银行卡</button>
+</div>
+</section>
+<section class="mt-5 rounded-3xl bg-white border border-[#FFE4E9] p-3">
+<div class="grid grid-cols-3 gap-2">
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('1')" type="button">1</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('2')" type="button">2</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('3')" type="button">3</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('4')" type="button">4</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('5')" type="button">5</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('6')" type="button">6</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('7')" type="button">7</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('8')" type="button">8</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('9')" type="button">9</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('.')" type="button">.</button>
+<button class="h-12 rounded-2xl bg-[#FFF9F9] text-[20px] font-semibold text-[#4A4A4A] active:bg-[#FFE4E9]" onclick="pressKey('0')" type="button">0</button>
+<button class="h-12 rounded-2xl bg-[#FFE9EC] flex items-center justify-center text-[#FF8B94]" onclick="pressKey('del')" type="button">
+<iconify-icon class="text-[22px]" icon="ph:backspace"></iconify-icon>
+</button>
+</div>
+<button class="mt-3 w-full h-12 rounded-2xl bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white text-[16px] font-bold shadow-[0_12px_24px_-14px_rgba(255,143,171,1)]" onclick="saveRecord()" type="button">
+          保存这笔记录
+        </button>
+<p class="mt-2 text-center text-[11px] text-[#A0A0A0]">保存后可在「账单」中编辑或删除，删除记录 7 天内可撤回</p>
+</section>
+</main>
+<div class="hidden absolute inset-0 z-40 bg-[#4A4A4A]/35 items-center justify-center px-8" id="successModal">
+<div class="w-full rounded-[28px] bg-white px-6 py-6 text-center shadow-xl">
+<span class="w-14 h-14 mx-auto rounded-full bg-[#E3F5EC] flex items-center justify-center text-[#7BC8A4]">
+<iconify-icon class="text-[30px]" icon="ph:check-circle"></iconify-icon>
+</span>
+<h3 class="mt-3 text-[16px] font-bold text-[#4A4A4A]">已保存</h3>
+<p class="mt-1 text-[13px] text-[#A0A0A0]" id="successDetail">餐饮 · ¥28.00 · 微信</p>
+<div class="mt-5 grid grid-cols-2 gap-2">
+<a class="h-11 rounded-2xl bg-[#FFE4E9] text-[#FF8FAB] text-[14px] font-semibold flex items-center justify-center" href="bills.html">查看账单</a>
+<a class="h-11 rounded-2xl bg-gradient-to-r from-[#FF8FAB] to-[#FFB7C5] text-white text-[14px] font-semibold flex items-center justify-center" href="home.html">返回首页</a>
+</div>
+</div>
+</div>
+<div class="hidden absolute left-5 right-5 top-[46%] z-50 rounded-3xl bg-[#4A4A4A]/95 text-white text-[13px] leading-relaxed px-4 py-3 shadow-lg" id="tip"></div>
+</div>
+<script>
+    var amount = '0';
+    var currentType = 'expense';
+    var currentCategory = '餐饮';
+    var currentEmoji = '🍜';
+    var currentPay = '微信';
+    var currentDate = '今天 9月23日';
+    var tipTimer = null;
+
+    function showTip(message) {
+      var tip = document.getElementById('tip');
+      tip.textContent = message;
+      tip.classList.remove('hidden');
+      if (tipTimer) {
+        clearTimeout(tipTimer);
+      }
+      tipTimer = setTimeout(function () {
+        tip.classList.add('hidden');
+      }, 2400);
+    }
+
+    function renderAmount() {
+      var value = amount === '' ? '0.00' : parseFloat(amount).toFixed(2);
+      document.getElementById('amountText').textContent = value;
+    }
+
+    function pressKey(key) {
+      if (key === 'del') {
+        amount = amount.length > 1 ? amount.slice(0, -1) : '0';
+        renderAmount();
+        return;
+      }
+      if (key === '.') {
+        if (amount.indexOf('.') === -1) {
+          amount = amount + '.';
+        }
+        renderAmount();
+        return;
+      }
+      if (amount.indexOf('.') !== -1 && amount.split('.')[1].length >= 2) {
+        return;
+      }
+      if (amount === '0') {
+        amount = key;
+      } else {
+        amount = amount + key;
+      }
+      renderAmount();
+    }
+
+    function pickCategory(btn) {
+      currentCategory = btn.getAttribute('data-cat');
+      currentEmoji = btn.getAttribute('data-emoji');
+      var buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(function (item) {
+        item.classList.remove('bg-[#FFE4E9]', 'border-[#FFB7C5]');
+        item.classList.add('bg-white', 'border-[#FFE4E9]');
+        var label = item.querySelector('span:last-child');
+        label.classList.remove('font-semibold', 'text-[#FF8FAB]');
+        label.classList.add('text-[#4A4A4A]');
+      });
+      btn.classList.remove('bg-white', 'border-[#FFE4E9]');
+      btn.classList.add('bg-[#FFE4E9]', 'border-[#FFB7C5]');
+      var activeLabel = btn.querySelector('span:last-child');
+      activeLabel.classList.remove('text-[#4A4A4A]');
+      activeLabel.classList.add('font-semibold', 'text-[#FF8FAB]');
+      document.getElementById('chosenCategory').textContent = currentCategory;
+      if (currentCategory === '工资') {
+        setType('income');
+      }
+    }
+
+    function pickPay(btn) {
+      currentPay = btn.getAttribute('data-pay');
+      var buttons = document.querySelectorAll('.pay-btn');
+      buttons.forEach(function (item) {
+        item.classList.remove('bg-[#E3F5EC]', 'text-[#7BC8A4]', 'border-[#A8E6CF]', 'font-semibold');
+        item.classList.add('bg-white', 'text-[#4A4A4A]', 'border-[#FFE4E9]');
+      });
+      btn.classList.remove('bg-white', 'text-[#4A4A4A]', 'border-[#FFE4E9]');
+      btn.classList.add('bg-[#E3F5EC]', 'text-[#7BC8A4]', 'border-[#A8E6CF]', 'font-semibold');
+      document.getElementById('chosenPay').textContent = currentPay;
+    }
+
+    function pickDate(btn, label) {
+      currentDate = label;
+      var buttons = document.querySelectorAll('.date-btn');
+      buttons.forEach(function (item) {
+        item.classList.remove('bg-[#FFE4E9]', 'text-[#FF8FAB]', 'border-[#FFB7C5]', 'font-semibold');
+        item.classList.add('bg-white', 'text-[#4A4A4A]', 'border-[#FFE4E9]');
+      });
+      btn.classList.remove('bg-white', 'text-[#4A4A4A]', 'border-[#FFE4E9]');
+      btn.classList.add('bg-[#FFE4E9]', 'text-[#FF8FAB]', 'border-[#FFB7C5]', 'font-semibold');
+      document.getElementById('chosenDate').textContent = label;
+      document.getElementById('dateInput').value = '';
+    }
+
+    function pickCustomDate(input) {
+      if (!input.value) {
+        return;
+      }
+      currentDate = input.value.replace(/-/g, '/');
+      document.getElementById('chosenDate').textContent = currentDate;
+      var buttons = document.querySelectorAll('.date-btn');
+      buttons.forEach(function (item) {
+        item.classList.remove('bg-[#FFE4E9]', 'text-[#FF8FAB]', 'border-[#FFB7C5]', 'font-semibold');
+        item.classList.add('bg-white', 'text-[#4A4A4A]', 'border-[#FFE4E9]');
+      });
+    }
+
+    function setType(type) {
+      currentType = type;
+      var expenseBtn = document.getElementById('btnExpense');
+      var incomeBtn = document.getElementById('btnIncome');
+      if (type === 'expense') {
+        expenseBtn.className = 'h-9 rounded-xl text-[13px] font-semibold bg-white text-[#FF8FAB] shadow-sm';
+        incomeBtn.className = 'h-9 rounded-xl text-[13px] font-semibold text-[#A0A0A0]';
+        document.getElementById('hint').innerHTML = '<iconify-icon icon="ph:magic-wand" class="text-[14px] text-[#FF8FAB]"></iconify-icon>已记住上次分类「餐饮」，3 秒即可完成这笔记录';
+      } else {
+        incomeBtn.className = 'h-9 rounded-xl text-[13px] font-semibold bg-white text-[#7BC8A4] shadow-sm';
+        expenseBtn.className = 'h-9 rounded-xl text-[13px] font-semibold text-[#A0A0A0]';
+        document.getElementById('hint').innerHTML = '<iconify-icon icon="ph:trend-up" class="text-[14px] text-[#7BC8A4]"></iconify-icon>收入记录会计入「统计 - 收入支出对比」';
+      }
+    }
+
+    function saveRecord() {
+      var value = parseFloat(amount);
+      if (!value || value <= 0) {
+        showTip('请先输入大于 0 的金额');
+        return;
+      }
+      var note = document.getElementById('noteInput').value.trim();
+      var sign = currentType === 'income' ? '+' : '-';
+      var detail = currentEmoji + ' ' + currentCategory + ' · ' + sign + '¥' + value.toFixed(2) + ' · ' + currentPay + ' · ' + currentDate;
+      if (note) {
+        detail = detail + ' · ' + note;
+      }
+      document.getElementById('successDetail').textContent = detail;
+      var modal = document.getElementById('successModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"d:/CLAUDE-MY-PRODUCT/001.产品PRD\")",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5176)",
+      "Bash(tasklist)",
+      "Bash(findstr node *)",
+      "Bash(curl -s http://localhost:5176/)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(open http://localhost:3000)",
+      "Bash(start http://localhost:3000)",
+      "Bash(curl -s http://localhost:3002/)",
+      "Bash(node --max-old-space-size=4096 node_modules/.bin/vite build)",
+      "Bash(findstr :3000)",
+      "WebSearch",
+      "WebFetch(domain:www.sharkkeeper.com)",
+      "Bash(mkdir -p \"d:/CLAUDE-MY-PRODUCT/003.前端代码（前端工程师）/src/{css,js,components,pages}\" && ls -la \"d:/CLAUDE-MY-PRODUCT/003.前端代码（前端工程师）/\")",
+      "Bash(start \"\" \"d:/CLAUDE-MY-PRODUCT/003.前端代码（前端工程师）/index.html\")",
+      "Bash(sed -i 's|href=\"pages/|href=\"|g' src/pages/*.html)",
+      "Bash(sed -i 's|href=\"home.html\"|href=\"home.html\"|g' src/pages/*.html)",
+      "Bash(mv src/css base.css)",
+      "Bash(mv src/js utils.js navigation.js)",
+      "Bash(start \"\" \"src/pages/login.html\")",
+      "Bash(more index.html)",
+      "Bash(start \"\" \"file:///d:/CLAUDE-MY-PRODUCT/003.前端代码（前端工程师）/src/pages/login.html\")",
+      "Bash(python -m http.server 8080)",
+      "Bash(start http://localhost:8080/src/pages/login.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/src/pages/login.html)",
+      "Bash(findstr \":8080\")"
+    ],
+    "additionalDirectories": [
+      "d:\\CLAUDE-MY-PRODUCT",
+      "d:\\CLAUDE-MY-PRODUCT\\003.前端代码（前端工程师）\\src"
+    ]
+  }
+}

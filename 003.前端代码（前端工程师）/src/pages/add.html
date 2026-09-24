@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>记小账 · 记一笔</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+  <div class="phone-container">
+    <!-- 头部 -->
+    <header class="page-header px-5">
+      <a href="home.html" class="w-9 h-9 rounded-full bg-white border border-sakura-light flex items-center justify-center text-main">
+        <iconify-icon icon="ph:caret-left"></iconify-icon>
+      </a>
+      <h1 class="page-title text-base">记一笔</h1>
+      <button class="w-9 h-9 rounded-full bg-white border border-sakura-light flex items-center justify-center text-sakura-deep" onclick="showToast('分类顺序可在「我的 - 默认分类」中调整')">
+        <iconify-icon icon="ph:sliders-horizontal"></iconify-icon>
+      </button>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="scroll-area px-5 pb-6">
+      <!-- 类型切换 -->
+      <div class="flex gap-2 p-1 rounded-xl bg-sakura-light mb-4">
+        <button class="flex-1 h-9 rounded-xl text-sm font-semibold bg-white text-sakura-deep shadow-sm" id="btnExpense" onclick="setType('expense')">支出</button>
+        <button class="flex-1 h-9 rounded-xl text-sm font-semibold text-sub" id="btnIncome" onclick="setType('income')">收入</button>
+      </div>
+
+      <!-- 金额显示 -->
+      <section class="rounded-2xl bg-white border border-sakura-light px-5 py-5 shadow-sm mb-5">
+        <p class="text-xs text-sub">金额</p>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span class="text-2xl font-bold text-sakura-deep">¥</span>
+          <span class="text-4xl font-bold text-main leading-none tracking-tight number-font" id="amountDisplay">0.00</span>
+        </div>
+        <div class="mt-3 flex items-center gap-2 text-xs text-sub">
+          <span class="px-2.5 py-1 rounded-full bg-sakura-light text-sakura-deep font-semibold" id="displayCategory">餐饮</span>
+          <span class="px-2.5 py-1 rounded-full bg-gray-100" id="displayPay">微信</span>
+          <span class="px-2.5 py-1 rounded-full bg-gray-100" id="displayDate">今天</span>
+        </div>
+      </section>
+
+      <!-- 分类选择 -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-main mb-3">选择分类</h2>
+        <div class="grid grid-cols-4 gap-3">
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-sakura-light border border-sakura" data-cat="餐饮" data-emoji="🍜" onclick="pickCategory(this)">
+            <span class="text-xl">🍜</span>
+            <span class="text-xs font-semibold text-sakura-deep">餐饮</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="交通" data-emoji="🚌" onclick="pickCategory(this)">
+            <span class="text-xl">🚌</span>
+            <span class="text-xs text-main">交通</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="购物" data-emoji="🛍️" onclick="pickCategory(this)">
+            <span class="text-xl">🛍️</span>
+            <span class="text-xs text-main">购物</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="娱乐" data-emoji="🎬" onclick="pickCategory(this)">
+            <span class="text-xl">🎬</span>
+            <span class="text-xs text-main">娱乐</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="医疗" data-emoji="💊" onclick="pickCategory(this)">
+            <span class="text-xl">💊</span>
+            <span class="text-xs text-main">医疗</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="教育" data-emoji="📚" onclick="pickCategory(this)">
+            <span class="text-xl">📚</span>
+            <span class="text-xs text-main">教育</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="住房" data-emoji="🏠" onclick="pickCategory(this)">
+            <span class="text-xl">🏠</span>
+            <span class="text-xs text-main">住房</span>
+          </button>
+          <button class="cat-btn flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-white border border-sakura-light" data-cat="其他" data-emoji="📦" onclick="pickCategory(this)">
+            <span class="text-xl">📦</span>
+            <span class="text-xs text-main">其他</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 日期 -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-main mb-3">日期</h2>
+        <div class="flex items-center gap-2">
+          <button class="date-btn h-9 px-3.5 rounded-xl text-xs font-semibold bg-sakura-light text-sakura-deep border border-sakura" data-date="today" onclick="pickDate(this)">今天</button>
+          <button class="date-btn h-9 px-3.5 rounded-xl text-xs bg-white text-main border border-sakura-light" data-date="yesterday" onclick="pickDate(this)">昨天</button>
+          <input type="date" class="h-9 flex-1 rounded-xl border border-sakura-light bg-white px-3 text-xs" id="dateInput">
+        </div>
+      </section>
+
+      <!-- 备注 -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-main mb-3">备注（可选）</h2>
+        <input type="text" class="input" id="noteInput" placeholder="例如：和同事拼单奶茶" maxlength="30">
+      </section>
+
+      <!-- 支付方式 -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-main mb-3">支付方式</h2>
+        <div class="flex flex-wrap gap-2">
+          <button class="pay-btn h-9 px-3.5 rounded-xl text-xs font-semibold bg-mint/30 text-mint-deep border border-mint" data-pay="微信" onclick="pickPay(this)">微信</button>
+          <button class="pay-btn h-9 px-3.5 rounded-xl text-xs bg-white text-main border border-sakura-light" data-pay="支付宝" onclick="pickPay(this)">支付宝</button>
+          <button class="pay-btn h-9 px-3.5 rounded-xl text-xs bg-white text-main border border-sakura-light" data-pay="现金" onclick="pickPay(this)">现金</button>
+          <button class="pay-btn h-9 px-3.5 rounded-xl text-xs bg-white text-main border border-sakura-light" data-pay="信用卡" onclick="pickPay(this)">信用卡</button>
+          <button class="pay-btn h-9 px-3.5 rounded-xl text-xs bg-white text-main border border-sakura-light" data-pay="银行卡" onclick="pickPay(this)">银行卡</button>
+        </div>
+      </section>
+
+      <!-- 数字键盘 -->
+      <section class="rounded-2xl bg-white border border-sakura-light p-3 mb-4">
+        <div class="grid grid-cols-4 gap-2">
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('1')">1</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('2')">2</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('3')">3</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('del')"><iconify-icon icon="ph:backspace"></iconify-icon></button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('4')">4</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('5')">5</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('6')">6</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('7')">7</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('8')">8</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('9')">9</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('0')">0</button>
+          <button class="h-12 rounded-xl bg-bg-secondary text-main text-lg font-semibold active:bg-sakura-light" onclick="pressKey('.')">.</button>
+        </div>
+        <button class="mt-3 w-full h-12 rounded-2xl bg-gradient-to-r from-sakura-deep to-sakura text-white font-bold shadow-lg" onclick="saveRecord()">
+          保存这笔记录
+        </button>
+      </section>
+
+      <p class="text-center text-xs text-sub">保存后可在「账单」中编辑或删除，删除记录 7 天内可撤回</p>
+    </main>
+
+    <!-- 成功弹窗 -->
+    <div class="hidden fixed inset-0 bg-black/40 z-40 items-center justify-center p-6" id="successModal">
+      <div class="bg-white rounded-3xl p-6 w-full max-w-sm text-center slide-up">
+        <span class="w-14 h-14 rounded-full bg-mint/30 flex items-center justify-center text-success mx-auto">
+          <iconify-icon icon="ph:check-circle" class="text-3xl"></iconify-icon>
+        </span>
+        <h3 class="mt-3 font-bold text-main text-lg">已保存</h3>
+        <p class="mt-1 text-sm text-sub" id="successDetail">餐饮 · ¥28.00 · 微信</p>
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <a href="bills.html" class="h-11 rounded-2xl bg-sakura-light text-sakura-deep text-sm font-semibold flex items-center justify-center">查看账单</a>
+          <a href="home.html" class="h-11 rounded-2xl bg-gradient-to-r from-sakura-deep to-sakura text-white text-sm font-semibold flex items-center justify-center">返回首页</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="globalToast"></div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script>
+    let amount = '0';
+    let currentType = 'expense';
+    let currentCategory = '餐饮';
+    let currentEmoji = '🍜';
+    let currentPay = '微信';
+    let currentDate = '今天';
+
+    function renderAmount() {
+      const value = amount === '' ? '0.00' : parseFloat(amount).toFixed(2);
+      document.getElementById('amountDisplay').textContent = value;
+    }
+
+    function pressKey(key) {
+      if (key === 'del') {
+        amount = amount.length > 1 ? amount.slice(0, -1) : '0';
+        renderAmount();
+        return;
+      }
+      if (key === '.') {
+        if (amount.indexOf('.') === -1) amount += '.';
+        renderAmount();
+        return;
+      }
+      if (amount.indexOf('.') !== -1 && amount.split('.')[1].length >= 2) return;
+      amount = amount === '0' ? key : amount + key;
+      renderAmount();
+    }
+
+    function pickCategory(btn) {
+      currentCategory = btn.dataset.cat;
+      currentEmoji = btn.dataset.emoji;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = b.className.replace('bg-sakura-light border-sakura', 'bg-white border-sakura-light');
+        b.querySelector('span:last-child').className = 'text-xs text-main';
+      });
+      btn.className = btn.className.replace('bg-white border-sakura-light', 'bg-sakura-light border-sakura');
+      btn.querySelector('span:last-child').className = 'text-xs font-semibold text-sakura-deep';
+      document.getElementById('displayCategory').textContent = currentCategory;
+
+      if (currentCategory === '工资') setType('income');
+    }
+
+    function pickPay(btn) {
+      currentPay = btn.dataset.pay;
+      document.querySelectorAll('.pay-btn').forEach(b => {
+        b.className = b.className.replace('bg-mint/30 text-mint-deep border-mint font-semibold', 'bg-white text-main border-sakura-light');
+      });
+      btn.className = btn.className.replace('bg-white text-main border-sakura-light', 'bg-mint/30 text-mint-deep border-mint font-semibold');
+      document.getElementById('displayPay').textContent = currentPay;
+    }
+
+    function pickDate(btn, label) {
+      currentDate = label || btn.dataset.date === 'today' ? '今天' : '昨天';
+      document.querySelectorAll('.date-btn').forEach(b => {
+        b.className = b.className.replace('bg-sakura-light text-sakura-deep border-sakura font-semibold', 'bg-white text-main border-sakura-light');
+      });
+      btn.className = btn.className.replace('bg-white text-main border-sakura-light', 'bg-sakura-light text-sakura-deep border-sakura font-semibold');
+      document.getElementById('displayDate').textContent = currentDate;
+    }
+
+    function setType(type) {
+      currentType = type;
+      const expenseBtn = document.getElementById('btnExpense');
+      const incomeBtn = document.getElementById('btnIncome');
+      if (type === 'expense') {
+        expenseBtn.className = 'flex-1 h-9 rounded-xl text-sm font-semibold bg-white text-sakura-deep shadow-sm';
+        incomeBtn.className = 'flex-1 h-9 rounded-xl text-sm font-semibold text-sub';
+      } else {
+        incomeBtn.className = 'flex-1 h-9 rounded-xl text-sm font-semibold bg-white text-mint-deep shadow-sm';
+        expenseBtn.className = 'flex-1 h-9 rounded-xl text-sm font-semibold text-sub';
+      }
+    }
+
+    function saveRecord() {
+      const value = parseFloat(amount);
+      if (!value || value <= 0) {
+        showToast('请先输入大于 0 的金额');
+        return;
+      }
+      const note = document.getElementById('noteInput').value.trim();
+      const sign = currentType === 'income' ? '+' : '-';
+      document.getElementById('successDetail').textContent =
+        `${currentEmoji} ${currentCategory} · ${sign}¥${value.toFixed(2)} · ${currentPay} · ${currentDate}${note ? ' · ' + note : ''}`;
+      document.getElementById('successModal').classList.remove('hidden');
+      document.getElementById('successModal').classList.add('flex');
+    }
+  </script>
+</body>
+</html>

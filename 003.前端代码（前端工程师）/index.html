@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>记小账</title>
+  <script>
+    // 检查登录状态
+    const SESSION_STORAGE = 'jixiao_zhang_session';
+    const session = localStorage.getItem(SESSION_STORAGE);
+
+    if (session) {
+      window.location.href = 'src/pages/home.html';
+    } else {
+      window.location.href = 'src/pages/login.html';
+    }
+  </script>
+</head>
+<body>
+  <p>正在跳转...</p>
+</body>
+</html>

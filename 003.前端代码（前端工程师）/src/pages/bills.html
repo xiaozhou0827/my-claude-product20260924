@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>记小账 · 账单</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+  <div class="phone-container">
+    <!-- 头部 -->
+    <header class="page-header">
+      <div class="flex items-center justify-between w-full">
+        <h1 class="page-title">账单</h1>
+        <div class="flex items-center gap-2">
+          <button class="btn-icon" onclick="showToast('支持导出 Excel / CSV，入口在「我的 - 数据管理」')">
+            <iconify-icon icon="ph:download-simple"></iconify-icon>
+          </button>
+          <a href="add.html" class="w-9 h-9 rounded-full bg-gradient-to-br from-sakura-deep to-sakura flex items-center justify-center text-white">
+            <iconify-icon icon="ph:plus"></iconify-icon>
+          </a>
+        </div>
+      </div>
+      <!-- 月份选择 -->
+      <div class="mt-4 flex items-center justify-between rounded-2xl bg-white border border-sakura-light px-4 py-2">
+        <button class="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center text-sub" onclick="showToast('仅演示 2026年9月账单数据')">
+          <iconify-icon icon="ph:caret-left"></iconify-icon>
+        </button>
+        <div class="text-center">
+          <p class="font-bold text-main">2026年9月</p>
+          <p class="text-xs text-sub">支出 ¥4,286.50 · 收入 ¥8,000.00</p>
+        </div>
+        <button class="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center text-sub" onclick="showToast('仅演示 2026年9月账单数据')">
+          <iconify-icon icon="ph:caret-right"></iconify-icon>
+        </button>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="scroll-area">
+      <!-- 搜索 -->
+      <div class="flex items-center gap-2 rounded-xl bg-white border border-sakura-light px-3.5 h-11 mb-3">
+        <iconify-icon icon="ph:magnifying-glass" class="text-sub text-lg"></iconify-icon>
+        <input type="text" class="flex-1 bg-transparent text-sm text-main placeholder-text-light focus:outline-none" id="searchInput" oninput="filterBills()" placeholder="搜索备注关键词，如「聚餐」「地铁」">
+      </div>
+
+      <!-- 类型筛选 -->
+      <div class="flex gap-2 mb-3">
+        <button class="type-btn flex-1 h-9 rounded-xl text-sm font-semibold bg-white text-sakura-deep shadow-sm" data-type="all" onclick="setType('all')">全部</button>
+        <button class="type-btn flex-1 h-9 rounded-xl text-sm font-semibold text-sub" data-type="expense" onclick="setType('expense')">支出</button>
+        <button class="type-btn flex-1 h-9 rounded-xl text-sm font-semibold text-sub" data-type="income" onclick="setType('income')">收入</button>
+      </div>
+
+      <!-- 分类筛选 -->
+      <div class="overflow-x-auto pb-2 mb-3">
+        <div class="flex gap-2 w-max">
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs font-semibold bg-sakura-deep text-white" data-cat="all" onclick="setCategory('all', this)">全部</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="餐饮" onclick="setCategory('餐饮', this)">🍜 餐饮</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="交通" onclick="setCategory('交通', this)">🚌 交通</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="购物" onclick="setCategory('购物', this)">🛍️ 购物</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="娱乐" onclick="setCategory('娱乐', this)">🎬 娱乐</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="医疗" onclick="setCategory('医疗', this)">💊 医疗</button>
+          <button class="cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light" data-cat="教育" onclick="setCategory('教育', this)">📚 教育</button>
+        </div>
+      </div>
+
+      <p class="text-xs text-sub mb-3">已加载最近记录，当前筛选显示 <span class="font-semibold text-sakura-deep" id="resultCount">14</span> 笔</p>
+
+      <!-- 账单列表 -->
+      <div id="billList" class="space-y-3"></div>
+
+      <!-- 空状态 -->
+      <div class="hidden text-center py-12" id="emptyState">
+        <span class="w-16 h-16 rounded-full bg-sakura-light flex items-center justify-center text-3xl mx-auto">🔍</span>
+        <p class="mt-3 font-semibold text-main">没有找到匹配的账单</p>
+        <p class="text-sm text-sub mt-1">试试更换分类，或清空搜索关键词</p>
+      </div>
+
+      <p class="mt-8 text-center text-xs text-light">删除的记录保留 7 天，可在「我的 - 撤回删除」中恢复</p>
+    </main>
+
+    <!-- FAB -->
+    <a href="add.html" class="fab">
+      <iconify-icon icon="ph:plus-circle"></iconify-icon>
+      记一笔
+    </a>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <iconify-icon icon="ph:house"></iconify-icon>
+        <span>首页</span>
+      </a>
+      <a href="bills.html" class="nav-item active">
+        <iconify-icon icon="ph:receipt"></iconify-icon>
+        <span>账单</span>
+      </a>
+      <a href="stats.html" class="nav-item">
+        <iconify-icon icon="ph:chart-pie-slice"></iconify-icon>
+        <span>统计</span>
+      </a>
+      <a href="budget.html" class="nav-item">
+        <iconify-icon icon="ph:wallet"></iconify-icon>
+        <span>预算</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <iconify-icon icon="ph:user"></iconify-icon>
+        <span>我的</span>
+      </a>
+    </nav>
+
+    <!-- 编辑弹窗 -->
+    <div class="hidden fixed inset-0 bg-black/40 z-40 items-end" id="editModal">
+      <div class="bg-white w-full max-w-md mx-auto rounded-t-3xl p-5 pb-8 slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-main text-lg">编辑账单</h3>
+          <button class="w-8 h-8 rounded-full bg-bg-secondary flex items-center justify-center" onclick="closeEdit()">
+            <iconify-icon icon="ph:x"></iconify-icon>
+          </button>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs text-sub">金额</label>
+            <input type="number" class="input mt-1" id="editAmount" min="0" step="0.01">
+          </div>
+          <div>
+            <label class="text-xs text-sub">分类</label>
+            <select class="input mt-1" id="editCategory">
+              <option value="餐饮">餐饮</option>
+              <option value="交通">交通</option>
+              <option value="购物">购物</option>
+              <option value="娱乐">娱乐</option>
+              <option value="医疗">医疗</option>
+              <option value="教育">教育</option>
+              <option value="住房">住房</option>
+              <option value="工资">工资</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-sub">备注</label>
+            <input type="text" class="input mt-1" id="editNote" maxlength="30">
+          </div>
+        </div>
+        <div class="flex gap-3 mt-5">
+          <button class="flex-1 h-11 rounded-2xl bg-gray-100 text-main font-semibold" onclick="closeEdit()">取消</button>
+          <button class="flex-1 h-11 rounded-2xl bg-gradient-to-r from-sakura-deep to-sakura text-white font-semibold" onclick="saveEdit()">保存修改</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="globalToast"></div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script>
+    // 示例账单数据
+    const bills = [
+      { id: 1, date: '2026-09-23', category: '餐饮', note: '早餐 豆浆油条', amount: 12.50, type: 'expense', pay: '微信', time: '07:40' },
+      { id: 2, date: '2026-09-23', category: '餐饮', note: '午餐 公司楼下简餐', amount: 28.00, type: 'expense', pay: '支付宝', time: '12:20' },
+      { id: 3, date: '2026-09-23', category: '交通', note: '地铁通勤', amount: 6.00, type: 'expense', pay: '支付宝', time: '08:35' },
+      { id: 4, date: '2026-09-23', category: '教育', note: '专业书籍《增长思维》', amount: 168.00, type: 'expense', pay: '信用卡', time: '21:05' },
+      { id: 5, date: '2026-09-22', category: '购物', note: '超市生活用品', amount: 156.80, type: 'expense', pay: '微信', time: '19:12' },
+      { id: 6, date: '2026-09-22', category: '餐饮', note: '晚餐 朋友聚餐', amount: 68.00, type: 'expense', pay: '信用卡', time: '20:30' },
+      { id: 7, date: '2026-09-21', category: '娱乐', note: '电影票《夏日回声》', amount: 88.00, type: 'expense', pay: '微信', time: '20:40' },
+      { id: 8, date: '2026-09-21', category: '交通', note: '打车 加班回家', amount: 32.50, type: 'expense', pay: '支付宝', time: '22:15' },
+      { id: 9, date: '2026-09-10', category: '工资', note: '9月工资', amount: 8000.00, type: 'income', pay: '银行卡', time: '10:00' },
+    ];
+
+    let activeType = 'all';
+    let activeCat = 'all';
+    let editingBill = null;
+
+    function renderBills() {
+      const container = document.getElementById('billList');
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+
+      const filtered = bills.filter(bill => {
+        const matchType = activeType === 'all' || bill.type === activeType;
+        const matchCat = activeCat === 'all' || bill.category === activeCat;
+        const matchKey = !keyword || bill.note.toLowerCase().includes(keyword) || bill.category.toLowerCase().includes(keyword);
+        return matchType && matchCat && matchKey;
+      });
+
+      document.getElementById('resultCount').textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        document.getElementById('emptyState').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('emptyState').classList.add('hidden');
+
+      // 按日期分组
+      const grouped = {};
+      filtered.forEach(bill => {
+        const date = bill.date;
+        if (!grouped[date]) grouped[date] = [];
+        grouped[date].push(bill);
+      });
+
+      container.innerHTML = Object.entries(grouped).map(([date, items]) => `
+        <div class="mb-4">
+          <div class="flex items-center justify-between px-1 mb-2">
+            <p class="text-xs font-semibold text-sub">${formatDate(date)}${date === '2026-09-23' ? ' · 今天' : ''}</p>
+            <p class="text-xs text-sub">¥${items.reduce((s, b) => s + b.amount, 0).toFixed(2)}</p>
+          </div>
+          <div class="space-y-2">
+            ${items.map(bill => renderBillItem(bill)).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderBillItem(bill) {
+      const emoji = getCategoryEmoji(bill.category);
+      const bgColor = getCategoryColor(bill.category);
+      const amountClass = bill.type === 'income' ? 'text-success' : 'text-danger';
+      const amountPrefix = bill.type === 'income' ? '+' : '-';
+
+      return `
+        <div class="card flex items-center gap-3 p-3" data-bill="${bill.id}">
+          <span class="w-10 h-10 rounded-2xl flex items-center justify-center text-xl" style="background:${bgColor}">${emoji}</span>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-main truncate">${bill.note}</p>
+            <p class="text-xs text-sub mt-0.5">${bill.category} · ${bill.pay} · ${bill.time}</p>
+          </div>
+          <span class="font-semibold ${amountClass}">${amountPrefix}¥${bill.amount.toFixed(2)}</span>
+          <button class="w-7 h-7 rounded-full bg-bg-secondary flex items-center justify-center text-sub" onclick="openEdit(${bill.id})">
+            <iconify-icon icon="ph:pencil-simple" class="text-sm"></iconify-icon>
+          </button>
+          <button class="w-7 h-7 rounded-full bg-bg-secondary flex items-center justify-center text-danger" onclick="deleteBill(${bill.id})">
+            <iconify-icon icon="ph:trash" class="text-sm"></iconify-icon>
+          </button>
+        </div>
+      `;
+    }
+
+    function setType(type) {
+      activeType = type;
+      document.querySelectorAll('.type-btn').forEach(btn => {
+        const isActive = btn.dataset.type === type;
+        btn.className = `type-btn flex-1 h-9 rounded-xl text-sm font-semibold ${isActive ? 'bg-white text-sakura-deep shadow-sm' : 'text-sub'}`;
+      });
+      renderBills();
+    }
+
+    function setCategory(cat, btn) {
+      activeCat = cat;
+      document.querySelectorAll('.cat-chip').forEach(c => {
+        c.className = 'cat-chip h-8 px-3.5 rounded-full text-xs bg-white text-main border border-sakura-light';
+      });
+      btn.className = 'cat-chip h-8 px-3.5 rounded-full text-xs font-semibold bg-sakura-deep text-white';
+      renderBills();
+    }
+
+    function filterBills() {
+      renderBills();
+    }
+
+    function openEdit(id) {
+      editingBill = bills.find(b => b.id === id);
+      if (editingBill) {
+        document.getElementById('editAmount').value = editingBill.amount;
+        document.getElementById('editCategory').value = editingBill.category;
+        document.getElementById('editNote').value = editingBill.note;
+        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('editModal').classList.add('flex');
+      }
+    }
+
+    function closeEdit() {
+      document.getElementById('editModal').classList.add('hidden');
+      document.getElementById('editModal').classList.remove('flex');
+      editingBill = null;
+    }
+
+    function saveEdit() {
+      if (!editingBill) return;
+      const amount = parseFloat(document.getElementById('editAmount').value);
+      if (!amount || amount <= 0) {
+        showToast('金额需为大于 0 的数字');
+        return;
+      }
+      editingBill.amount = amount;
+      editingBill.category = document.getElementById('editCategory').value;
+      editingBill.note = document.getElementById('editNote').value || editingBill.category;
+      closeEdit();
+      renderBills();
+      showToast('已保存修改');
+    }
+
+    function deleteBill(id) {
+      const index = bills.findIndex(b => b.id === id);
+      if (index > -1) {
+        const bill = bills[index];
+        bills.splice(index, 1);
+        renderBills();
+        showToast(`已删除「${bill.note}」，7天内可撤回`);
+      }
+    }
+
+    // 初始化
+    renderBills();
+  </script>
+</body>
+</html>

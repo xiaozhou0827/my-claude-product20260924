@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>记小账 · 统计</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+  <div class="phone-container">
+    <!-- 头部 -->
+    <header class="page-header">
+      <div class="flex items-center justify-between w-full">
+        <h1 class="page-title">统计</h1>
+        <button class="h-9 px-3.5 rounded-full bg-white border border-sakura-light flex items-center gap-1.5 text-sm text-main" onclick="showToast('支持按周/月/年查看统计，当前演示月度视图')">
+          <iconify-icon icon="ph:calendar" class="text-sakura-deep"></iconify-icon>
+          2026年9月
+        </button>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="scroll-area">
+      <!-- 收支概览 -->
+      <section class="card mb-4">
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <p class="text-xs text-sub">总支出</p>
+            <p class="mt-1 text-xl font-bold text-danger number-font">¥4,286</p>
+          </div>
+          <div class="border-x border-sakura-light">
+            <p class="text-xs text-sub">总收入</p>
+            <p class="mt-1 text-xl font-bold text-success number-font">¥8,000</p>
+          </div>
+          <div>
+            <p class="text-xs text-sub">结余</p>
+            <p class="mt-1 text-xl font-bold text-main number-font">¥3,713</p>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between rounded-xl bg-bg-secondary px-3.5 py-2.5">
+          <span class="text-xs text-sub">对比上月 ¥3,975</span>
+          <span class="text-xs font-semibold text-sakura-deep flex items-center gap-1">
+            <iconify-icon icon="ph:trend-up"></iconify-icon>
+            环比 +7.8%
+          </span>
+        </div>
+      </section>
+
+      <!-- 分类占比 -->
+      <section class="card mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-main">消费占比</h2>
+          <span class="text-xs text-sub">单位：元</span>
+        </div>
+        <div class="h-48" id="pieChart"></div>
+        <ul class="mt-3 space-y-2">
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-sakura-deep"></span>
+            <span class="text-sm text-main flex-1">餐饮</span>
+            <span class="text-xs text-sub">35%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥1,500</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-sakura"></span>
+            <span class="text-sm text-main flex-1">购物</span>
+            <span class="text-xs text-sub">25%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥1,072</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-lavender"></span>
+            <span class="text-sm text-main flex-1">住房</span>
+            <span class="text-xs text-sub">14.5%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥620</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-lemon"></span>
+            <span class="text-sm text-main flex-1">娱乐</span>
+            <span class="text-xs text-sub">12%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥514</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-mint"></span>
+            <span class="text-sm text-main flex-1">交通</span>
+            <span class="text-xs text-sub">10%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥429</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-coral"></span>
+            <span class="text-sm text-main flex-1">医疗</span>
+            <span class="text-xs text-sub">3.5%</span>
+            <span class="text-sm font-semibold text-main w-20 text-right number-font">¥152</span>
+          </li>
+        </ul>
+        <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+          <div class="rounded-xl bg-bg-secondary py-2">
+            <p class="text-xs text-sub">日均支出</p>
+            <p class="text-sm font-semibold text-main mt-0.5 number-font">¥186</p>
+          </div>
+          <div class="rounded-xl bg-bg-secondary py-2">
+            <p class="text-xs text-sub">最高单日</p>
+            <p class="text-sm font-semibold text-main mt-0.5 number-font">¥1,800</p>
+          </div>
+          <div class="rounded-xl bg-bg-secondary py-2">
+            <p class="text-xs text-sub">记账笔数</p>
+            <p class="text-sm font-semibold text-main mt-0.5">128 笔</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 每日趋势 -->
+      <section class="card mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-main">每日支出趋势</h2>
+          <span class="text-xs text-sub">9月1日 - 9月23日</span>
+        </div>
+        <div class="h-48" id="trendChart"></div>
+      </section>
+
+      <!-- 月度对比 -->
+      <section class="card mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-main">月度支出对比</h2>
+          <span class="text-xs text-sub">单位：元</span>
+        </div>
+        <div class="h-44" id="monthChart"></div>
+        <p class="mt-2 text-xs text-sub">7月为近半年支出最高月（¥4,520），9月已接近该水平，建议关注购物类开销。</p>
+      </section>
+
+      <!-- 智能提醒 -->
+      <section>
+        <h2 class="font-bold text-main mb-3">智能提醒</h2>
+        <div class="space-y-3">
+          <div class="card flex items-start gap-3 bg-red-50 border-red-100">
+            <span class="w-9 h-9 shrink-0 rounded-2xl bg-red-100 flex items-center justify-center text-danger">
+              <iconify-icon icon="ph:warning-circle" class="text-xl"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-main">餐饮预算已超支</p>
+              <p class="mt-0.5 text-xs text-sub">已用 ¥1,500.30 / ¥1,500.00，超出 ¥0.30</p>
+            </div>
+          </div>
+          <div class="card flex items-start gap-3">
+            <span class="w-9 h-9 shrink-0 rounded-2xl bg-yellow-100 flex items-center justify-center text-warning">
+              <iconify-icon icon="ph:coins" class="text-xl"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-main">大额消费提醒</p>
+              <p class="mt-0.5 text-xs text-sub">9月14日「数码配件 · 路由器」¥480.00，超过单笔 ¥300 提醒线</p>
+            </div>
+          </div>
+          <div class="card flex items-start gap-3">
+            <span class="w-9 h-9 shrink-0 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-500">
+              <iconify-icon icon="ph:arrows-clockwise" class="text-xl"></iconify-icon>
+            </span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-main">周期性支出将至</p>
+              <p class="mt-0.5 text-xs text-sub">房租 ¥1,800.00 将于 10月1日 扣款；视频会员 ¥25.00 于 9月28日 扣款</p>
+            </div>
+          </div>
+        </div>
+        <button class="mt-3 w-full h-11 rounded-2xl bg-sakura-light text-sakura-deep text-sm font-semibold" onclick="showToast('提醒设置已同步至「预算」页面')">
+          调整提醒规则
+        </button>
+      </section>
+    </main>
+
+    <!-- FAB -->
+    <a href="add.html" class="fab">
+      <iconify-icon icon="ph:plus-circle"></iconify-icon>
+      记一笔
+    </a>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <iconify-icon icon="ph:house"></iconify-icon>
+        <span>首页</span>
+      </a>
+      <a href="bills.html" class="nav-item">
+        <iconify-icon icon="ph:receipt"></iconify-icon>
+        <span>账单</span>
+      </a>
+      <a href="stats.html" class="nav-item active">
+        <iconify-icon icon="ph:chart-pie-slice"></iconify-icon>
+        <span>统计</span>
+      </a>
+      <a href="budget.html" class="nav-item">
+        <iconify-icon icon="ph:wallet"></iconify-icon>
+        <span>预算</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <iconify-icon icon="ph:user"></iconify-icon>
+        <span>我的</span>
+      </a>
+    </nav>
+
+    <!-- Toast -->
+    <div class="toast" id="globalToast"></div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script>
+    // 饼图
+    const pieChart = echarts.init(document.getElementById('pieChart'));
+    pieChart.setOption({
+      tooltip: { trigger: 'item', formatter: '{b}：¥{c}（{d}%）' },
+      color: ['#FF8FAB', '#FFB7C5', '#C7CEEA', '#FFEAA7', '#A8E6CF', '#FF8B94'],
+      series: [{
+        type: 'pie',
+        radius: ['50%', '75%'],
+        center: ['50%', '50%'],
+        itemStyle: { borderColor: '#fff', borderWidth: 3, borderRadius: 8 },
+        label: { show: false },
+        data: [
+          { name: '餐饮', value: 1500.30 },
+          { name: '购物', value: 1071.60 },
+          { name: '住房', value: 620.00 },
+          { name: '娱乐', value: 514.40 },
+          { name: '交通', value: 428.65 },
+          { name: '医疗', value: 151.55 }
+        ]
+      }]
+    });
+
+    // 趋势图
+    const trendChart = echarts.init(document.getElementById('trendChart'));
+    trendChart.setOption({
+      grid: { left: 8, right: 10, top: 20, bottom: 24, containLabel: true },
+      tooltip: { trigger: 'axis', formatter: p => `9月${p[0].axisValue}日：¥${Number(p[0].data).toFixed(2)}` },
+      xAxis: {
+        type: 'category',
+        data: Array.from({length: 23}, (_, i) => i + 1),
+        axisLine: { lineStyle: { color: '#FFE4E9' } },
+        axisTick: { show: false },
+        axisLabel: { color: '#A0A0A0', fontSize: 10, interval: 2 }
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: { lineStyle: { color: '#FFF0F3' } },
+        axisLabel: { color: '#A0A0A0', fontSize: 10 }
+      },
+      series: [{
+        type: 'line',
+        smooth: true,
+        symbolSize: 4,
+        data: [45.5, 128, 62, 210, 88, 320, 156, 74, 42.5, 198, 65, 240, 118, 480, 96, 58, 320.5, 142, 268, 76, 88.5, 364, 214.5],
+        lineStyle: { width: 2, color: '#FF8FAB' },
+        itemStyle: { color: '#FF8FAB' },
+        areaStyle: {
+          color: {
+            type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(255,143,171,0.3)' },
+              { offset: 1, color: 'rgba(255,228,233,0.1)' }
+            ]
+          }
+        }
+      }]
+    });
+
+    // 月度对比图
+    const monthChart = echarts.init(document.getElementById('monthChart'));
+    monthChart.setOption({
+      grid: { left: 8, right: 10, top: 20, bottom: 24, containLabel: true },
+      tooltip: { trigger: 'axis', formatter: p => `${p[0].name}支出：¥${Number(p[0].data).toFixed(0)}` },
+      xAxis: {
+        type: 'category',
+        data: ['4月', '5月', '6月', '7月', '8月', '9月'],
+        axisLine: { lineStyle: { color: '#FFE4E9' } },
+        axisTick: { show: false },
+        axisLabel: { color: '#A0A0A0', fontSize: 10 }
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: { lineStyle: { color: '#FFF0F3' } },
+        axisLabel: { color: '#A0A0A0', fontSize: 10 }
+      },
+      series: [{
+        type: 'bar',
+        barWidth: 20,
+        data: [3860, 4210, 3980, 4520, 3975, 4286.5],
+        itemStyle: {
+          borderRadius: [8, 8, 0, 0],
+          color: (params) => params.dataIndex === 5 ? '#FF8FAB' : '#FFD7DF'
+        },
+        label: { show: true, position: 'top', color: '#A0A0A0', fontSize: 10, formatter: p => Math.round(p.data) }
+      }]
+    });
+
+    window.addEventListener('resize', () => {
+      pieChart.resize();
+      trendChart.resize();
+      monthChart.resize();
+    });
+  </script>
+</body>
+</html>

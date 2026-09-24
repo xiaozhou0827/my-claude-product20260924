@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>记小账 · 登录</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/auth.css">
+  <style>
+    body { margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div class="auth-bg">
+    <!-- Logo -->
+    <div class="auth-logo">🦈</div>
+    <h1 class="text-white text-2xl font-bold mb-1">记小账</h1>
+    <p class="text-white/80 text-sm mb-8">简单好用的记账神器</p>
+
+    <!-- 表单卡片 -->
+    <div class="auth-card">
+      <!-- 切换标签 -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">登录</button>
+        <button class="auth-tab" onclick="switchTab('register')">注册</button>
+      </div>
+
+      <!-- 登录表单 -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">用户名</label>
+            <input type="text" class="auth-input" id="loginUsername" placeholder="请输入用户名" required minlength="3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">密码</label>
+            <div class="password-wrapper">
+              <input type="password" class="auth-input" id="loginPassword" placeholder="请输入密码" required minlength="6">
+              <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">
+                <iconify-icon icon="ph:eye" class="text-lg"></iconify-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-error error" id="loginError"></div>
+
+        <button type="submit" class="auth-submit" id="loginBtn">
+          登录
+        </button>
+
+        <div class="auth-divider">或使用以下方式登录</div>
+
+        <div class="social-login">
+          <button type="button" class="social-btn" onclick="showToast('微信登录功能开发中')">💬</button>
+          <button type="button" class="social-btn" onclick="showToast('手机号登录功能开发中')">📱</button>
+        </div>
+
+        <p class="auth-agreement">
+          登录即表示同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a>
+        </p>
+      </form>
+
+      <!-- 注册表单 -->
+      <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">用户名</label>
+            <input type="text" class="auth-input" id="regUsername" placeholder="至少3个字符" required minlength="3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">密码</label>
+            <div class="password-wrapper">
+              <input type="password" class="auth-input" id="regPassword" placeholder="至少6个字符" required minlength="6">
+              <button type="button" class="password-toggle" onclick="togglePassword('regPassword', this)">
+                <iconify-icon icon="ph:eye" class="text-lg"></iconify-icon>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">确认密码</label>
+            <div class="password-wrapper">
+              <input type="password" class="auth-input" id="regConfirmPassword" placeholder="再次输入密码" required minlength="6">
+              <button type="button" class="password-toggle" onclick="togglePassword('regConfirmPassword', this)">
+                <iconify-icon icon="ph:eye" class="text-lg"></iconify-icon>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-main mb-1.5">昵称 <span class="text-sub">(可选)</span></label>
+            <input type="text" class="auth-input" id="regNickname" placeholder="给自己起个昵称吧" maxlength="12">
+          </div>
+        </div>
+
+        <div class="auth-error error" id="regError"></div>
+
+        <button type="submit" class="auth-submit" id="regBtn">
+          注册
+        </button>
+
+        <p class="auth-agreement">
+          注册即表示同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a>
+        </p>
+      </form>
+    </div>
+
+    <p class="text-white/60 text-xs mt-6">数据存储在本地，请放心使用</p>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    // 自动登录检查
+    if (isLoggedIn()) {
+      window.location.href = 'home.html';
+    }
+
+    function switchTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const regForm = document.getElementById('registerForm');
+      const tabs = document.querySelectorAll('.auth-tab');
+
+      tabs.forEach(t => t.classList.remove('active'));
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabs[0].classList.add('active');
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabs[1].classList.add('active');
+      }
+
+      // 清空错误提示
+      document.getElementById('loginError').classList.remove('show');
+      document.getElementById('regError').classList.remove('show');
+    }
+
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('iconify-icon');
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('icon', 'ph:eye-slash');
+      } else {
+        input.type = 'password';
+        icon.setAttribute('icon', 'ph:eye');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      // 清空错误
+      errorEl.classList.remove('show');
+
+      // 加载中
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> 登录中...';
+
+      // 模拟网络延迟
+      setTimeout(() => {
+        const result = login(username, password);
+
+        if (result.success) {
+          showToast('登录成功，正在跳转...', 'success');
+          setTimeout(() => {
+            window.location.href = 'home.html';
+          }, 800);
+        } else {
+          errorEl.textContent = result.message;
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = '登录';
+        }
+      }, 600);
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+      const nickname = document.getElementById('regNickname').value.trim();
+      const errorEl = document.getElementById('regError');
+      const btn = document.getElementById('regBtn');
+
+      // 验证密码一致性
+      if (password !== confirmPassword) {
+        errorEl.textContent = '两次输入的密码不一致';
+        errorEl.classList.add('show');
+        return;
+      }
+
+      // 清空错误
+      errorEl.classList.remove('show');
+
+      // 加载中
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> 注册中...';
+
+      // 模拟网络延迟
+      setTimeout(() => {
+        const result = register(username, password, nickname);
+
+        if (result.success) {
+          showToast('注册成功！正在跳转...', 'success');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 800);
+        } else {
+          errorEl.textContent = result.message;
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = '注册';
+        }
+      }, 600);
+    }
+  </script>
+</body>
+</html>
